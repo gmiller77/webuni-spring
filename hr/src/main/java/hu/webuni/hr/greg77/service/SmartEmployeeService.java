@@ -3,13 +3,11 @@ package hu.webuni.hr.greg77.service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import hu.webuni.hr.greg77.model.Employee;
 
 @Service
-@Primary
 public class SmartEmployeeService implements EmployeeService {
 
 	@Override
