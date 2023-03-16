@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: smart
+hr:
+  raise:
+    smart:
+      defaultPercent: 0
+      percents:
+        - limit: 120
+          percent: 15
+        - limit: 96
+          percent: 10
+        - limit: 60
+          percent: 5
+        - limit: 30
+          percent: 2      
+    def:
+      percent: 5

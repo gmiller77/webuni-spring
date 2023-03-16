@@ -2,6 +2,7 @@ package hu.webuni.hr.greg77.service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,18 @@ public class SmartEmployeeService implements EmployeeService {
 	
 	@Override
 	public int getPayRaisePercent(Employee employee) {
+		
+		
 		int raisePercent = config.getRaise().getSmart().getDefaultPercent();
 		long months = ChronoUnit.MONTHS.between(employee.getStartDate(), LocalDateTime.now());
 		
+		
+		
+		for (int limitIterator iterator = config.getRaise().getSmart().getLimits(); iterator.hasNext();) {
+			
+			type type = (type) iterator.next();
+			
+		}
 		if (months >= config.getRaise().getSmart().getLimit1()) raisePercent = config.getRaise().getSmart().getPercent1();
 			else if (months >= config.getRaise().getSmart().getLimit2()) raisePercent = config.getRaise().getSmart().getPercent2();
 			else if (months >= config.getRaise().getSmart().getLimit3()) raisePercent = config.getRaise().getSmart().getPercent3();
