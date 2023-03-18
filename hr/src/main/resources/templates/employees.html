@@ -12,7 +12,8 @@
 			<span th:text="${employee.name}">name</span>
 			<span th:text="${employee.position}">position</span>
 			<span th:text="${employee.salary}">salary</span>
-			<span th:text="${employee.startDate}">startDate</span>
+			<!-- <span th:text="${employee.startDate}">startDate</span> -->	
+			<span th:text="${#temporals.format(employee.startDate, 'dd-MM-yyyy HH:mm')}">startDate</span>	
 		</li>
 	</ul>
 	<form th:action="@{/employees}" method=post th:object="${newEmployee}">
@@ -20,7 +21,9 @@
 		Name: <input th:field="*{name}" /> <br>
 		Position: <input th:field="*{position}" /> <br>
 		Salary: <input th:field="*{salary}" /> <br>
-		Start date: <input th:field="*{startDate}" /> <br>
+		<!-- Start date: <input type="date" th:field="*{startDate}" /> <br> --> 
+		Start date: <input type="datetime-local" th:field="*{startDate}" /> <br>
+		<!-- <p th:text="${#temporals.formatISO(localDateTime)}"></p> -->
 		<input type="submit" value="Add" />
 	</form>
 </body>
