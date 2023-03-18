@@ -1,6 +1,6 @@
 package hu.webuni.hr.greg77.config;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -53,25 +53,8 @@ public class HrConfigProperties {
 	}
 
 	public static class SmartRaise {
-		private List<Integer> limits;
-		private List<Integer> percents;
 		private int defaultPercent;
-
-		public List<Integer> getLimits() {
-			return limits;
-		}
-
-		public void setLimits(List<Integer> limits) {
-			this.limits = limits;
-		}
-
-		public List<Integer> getPercents() {
-			return percents;
-		}
-
-		public void setPercents(List<Integer> percents) {
-			this.percents = percents;
-		}
+		private Map<String, SmartRaisePercent> percents;
 
 		public int getDefaultPercent() {
 			return defaultPercent;
@@ -79,6 +62,46 @@ public class HrConfigProperties {
 
 		public void setDefaultPercent(int defaultPercent) {
 			this.defaultPercent = defaultPercent;
+		}
+
+		public Map<String, SmartRaisePercent> getPercents() {
+			return percents;
+		}
+
+		public void setPercents(Map<String, SmartRaisePercent> percents) {
+			this.percents = percents;
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder mapAsString = new StringBuilder("{");
+			for (String key : this.percents.keySet()) {
+				mapAsString.append(key + "=" + percents.get(key).getLimit() + ", ");
+			}
+			mapAsString.delete(mapAsString.length() - 2, mapAsString.length()).append("}");
+			return mapAsString.toString();
+		}
+	}
+
+	public static class SmartRaisePercent {
+
+		private int limit; // limit in MONTHS, like 10 years = 120 months etc.
+		private int percent;
+
+		public int getLimit() {
+			return limit;
+		}
+
+		public void setLimit(int limit) {
+			this.limit = limit;
+		}
+
+		public int getPercent() {
+			return percent;
+		}
+
+		public void setPercent(int percent) {
+			this.percent = percent;
 		}
 
 	}

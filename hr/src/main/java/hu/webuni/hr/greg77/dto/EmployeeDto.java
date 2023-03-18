@@ -1,16 +1,18 @@
-package hu.webuni.hr.greg77.model;
+package hu.webuni.hr.greg77.dto;
 
 import java.time.LocalDateTime;
 
-public class Employee {
+public class EmployeeDto {
 	private long id;
 	private String name;
 	private String position;
 	private int salary;
 	private LocalDateTime startDate;
 
-	public Employee(long id, String name, String position, int salary, LocalDateTime startDate) {
-		super();
+	public EmployeeDto() {
+	}
+
+	public EmployeeDto(long id, String name, String position, int salary, LocalDateTime startDate) {
 		this.id = id;
 		this.name = name;
 		this.position = position;
