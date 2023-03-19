@@ -3,25 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <title>HR application</title>
+<title>Add CSS and JS to Thymeleaf</title>
+<link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet" />
 </head>
 <body>
 	<h1>List of employees</h1>
-	<ul>
-		<li th:each="employee : ${employees}">
-			<span th:text="${employee.id}">id</span>
-			<span th:text="${employee.name}">name</span>
-			<span th:text="${employee.position}">position</span>
-			<span th:text="${employee.salary}">salary</span>
-			<!-- <span th:text="${employee.startDate}">startDate</span> -->	
-			<span th:text="${#temporals.format(employee.startDate, 'dd-MM-yyyy HH:mm')}">startDate</span>	
-		</li>
-	</ul>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Position</th>
+			<th>Salary</th>
+			<th>Start of work</th>
+		</tr>
+
+		<tr th:each="employee : ${employees}">
+			<td th:text="${employee.id}">id</td>
+			<td th:text="${employee.name}">name</td>
+			<td th:text="${employee.position}">position</td>
+			<td th:text="${employee.salary}">salary</td>
+			<!-- <td th:text="${employee.startDate}">startDate</td> -->
+			<td
+				th:text="${#temporals.format(employee.startDate, 'dd-MM-yyyy HH:mm')}">startDate</td>
+		</tr>
+	</table>
 	<form th:action="@{/employees}" method=post th:object="${newEmployee}">
-		Id: <input th:field="*{id}" /> <br>
+		Id: <input type="number" th:field="*{id}" /> <br>
 		Name: <input th:field="*{name}" /> <br>
 		Position: <input th:field="*{position}" /> <br>
-		Salary: <input th:field="*{salary}" /> <br>
-		<!-- Start date: <input type="date" th:field="*{startDate}" /> <br> --> 
+		Salary: <input type="number" th:field="*{salary}" /> <br>
+		<!-- Start date: <input type="date" th:field="*{startDate}" /> <br> -->
 		Start date: <input type="datetime-local" th:field="*{startDate}" /> <br>
 		<!-- <p th:text="${#temporals.formatISO(localDateTime)}"></p> -->
 		<input type="submit" value="Add" />
