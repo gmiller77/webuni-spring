@@ -70,12 +70,12 @@ public class HrController {
 		employees.remove(id);
 	}
 
-	@GetMapping("/salaryFilter/{salaryLimit}")
-	public Map<Long, EmployeeDto> getAllEmployeePaymentGreaterThan(@PathVariable int salaryLimit) {
+	@GetMapping("/salaryFilter/{query}")
+	public Map<Long, EmployeeDto> getAllEmployeePaymentGreaterThan(@PathVariable int query) {
 		Map<Long, EmployeeDto> resultMap = employees.
 				entrySet().
 				stream().
-				filter(map -> map.getValue().getSalary() >= salaryLimit).
+				filter(map -> map.getValue().getSalary() >= query).
 				collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));	
 		return resultMap;
 	}
