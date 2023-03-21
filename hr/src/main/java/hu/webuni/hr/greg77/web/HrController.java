@@ -76,7 +76,6 @@ public class HrController {
 	public List<EmployeeDto> getAllEmployeeSalaryGreaterThan(@PathVariable int query) {
 
 		return employees.values().stream().filter(e -> e.getSalary() >= query).collect(Collectors.toList());
-
 	}
 
 	/*
