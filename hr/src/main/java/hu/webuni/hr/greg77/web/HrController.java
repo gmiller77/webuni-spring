@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,8 @@ public class HrController {
 		employees.put(2L, new EmployeeDto(2L, "Bob Tailor", "assistant", 12_000, LocalDateTime.now().minusMonths(119)));
 		employees.put(3L,
 				new EmployeeDto(3L, "Charles Adams", "section head", 24_000, LocalDateTime.now().minusMonths(74)));
-		employees.put(4L, new EmployeeDto(4L, "Diane Kerrigan", "adjutant", 15_000, LocalDateTime.now().minusMonths(55)));
+		employees.put(4L,
+				new EmployeeDto(4L, "Diane Kerrigan", "adjutant", 15_000, LocalDateTime.now().minusMonths(55)));
 		employees.put(5L, new EmployeeDto(5L, "Eric Tesla", "technician", 8_000, LocalDateTime.now().minusMonths(28)));
 	}
 
@@ -47,7 +49,7 @@ public class HrController {
 		else
 			return ResponseEntity.notFound().build();
 	}
-	
+
 	@PostMapping
 	public EmployeeDto createEmployee(@RequestBody EmployeeDto employeeDto) {
 		employees.put(employeeDto.getId(), employeeDto);
@@ -71,13 +73,18 @@ public class HrController {
 	}
 
 	@GetMapping("/salaryFilter/{query}")
-	public Map<Long, EmployeeDto> getAllEmployeePaymentGreaterThan(@PathVariable int query) {
-		Map<Long, EmployeeDto> resultMap = employees.
-				entrySet().
-				stream().
-				filter(map -> map.getValue().getSalary() >= query).
-				collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));	
-		return resultMap;
+	public List<EmployeeDto> getAllEmployeeSalaryGreaterThan(@PathVariable int query) {
+
+		return employees.values().stream().filter(e -> e.getSalary() >= query).collect(Collectors.toList());
+
 	}
-	
+
+	/*
+	 * @GetMapping("/salaryFilter/{query}") public Map<Long, EmployeeDto>
+	 * getAllEmployeeSalaryGreaterThan(@PathVariable int query) { Map<Long,
+	 * EmployeeDto> resultMap = employees. entrySet(). stream(). filter(map ->
+	 * map.getValue().getSalary() >= query). collect(Collectors.toMap(map ->
+	 * map.getKey(), map -> map.getValue())); return resultMap; }
+	 */
+
 }
