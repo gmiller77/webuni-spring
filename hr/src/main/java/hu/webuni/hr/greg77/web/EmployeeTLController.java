@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import hu.webuni.hr.greg77.dto.EmployeeDto;
 
 @Controller
-public class HrTLController {
-	
+public class EmployeeTLController {
+
 	private List<EmployeeDto> allEmployees = new ArrayList<>();
 
 	{
 		allEmployees.add(new EmployeeDto(1, "Anna Smith", "chief", 1000, LocalDateTime.now().minusMonths(130)));
 		allEmployees.add(new EmployeeDto(2, "Bob Tailor", "assistant", 1000, LocalDateTime.now().minusMonths(119)));
-		allEmployees.add(new EmployeeDto(3, "Charles Adams", "section head", 1000, LocalDateTime.now().minusMonths(74)));
+		allEmployees
+				.add(new EmployeeDto(3, "Charles Adams", "section head", 1000, LocalDateTime.now().minusMonths(74)));
 		allEmployees.add(new EmployeeDto(4, "Diane Kerrigan", "adjutant", 1000, LocalDateTime.now().minusMonths(55)));
 		allEmployees.add(new EmployeeDto(5, "Eric Tesla", "technician", 1000, LocalDateTime.now().minusMonths(28)));
 	}
 
 	@GetMapping("/")
 	public String home() {
-		System.out.println("kmgfkld");
 		return "index";
 	}
 
@@ -35,6 +35,13 @@ public class HrTLController {
 		model.put("employees", allEmployees);
 		model.put("newEmployee", new EmployeeDto());
 		return "employees";
+	}
+	
+	@GetMapping("/id")
+	public String editEmployees(Map<String, Object> model) {
+		model.put("employees", allEmployees);
+		model.put("newEmployee", new EmployeeDto());
+		return "employeeByID";
 	}
 
 	@PostMapping("/employees")

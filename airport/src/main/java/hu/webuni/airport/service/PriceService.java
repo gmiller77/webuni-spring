@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 public class PriceService {
 	
 	private DiscountService discountService;
-		
+	
+	//az alábbi konstruktorban a paraméteres bean injektálása van a DiscountService-nek, mivel
+	// csak 1 konstruktor van ebben az osztályban, és emiatt a SpringBoot automatikusan injektál
 	public PriceService(DiscountService discountService) {		
 		this.discountService = discountService;
 	}

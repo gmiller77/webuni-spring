@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -16,13 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hu.webuni.hr.greg77.dto.EmployeeDto;
 
 @RestController
 @RequestMapping("/api/employees")
-public class HrController {
+public class EmployeeController {
 
 	private Map<Long, EmployeeDto> employees = new HashMap<>();
 
@@ -72,13 +72,25 @@ public class HrController {
 		employees.remove(id);
 	}
 
+	// @PathVariable megoldás - ez működött, ez lett elfogadva
 	@GetMapping("/salaryFilter/{query}")
 	public List<EmployeeDto> getAllEmployeeSalaryGreaterThan(@PathVariable int query) {
+		return employees.values().stream().
+				filter(e -> e.getSalary() >= query).
+				collect(Collectors.toList());
+	}
 
-		return employees.values().stream().filter(e -> e.getSalary() >= query).collect(Collectors.toList());
+	// @RequestParam-os megoldás
+	@GetMapping("/FilterBySalary")	
+	public List<EmployeeDto> getAllEmployeeSalaryGreaterThan2(@RequestParam("salaryMin") int limit) {
+		return employees.values().stream().
+				filter(e -> e.getSalary() >= limit).
+				collect(Collectors.toList());
 	}
 
 	/*
+	 * Map-es megoldás
+	 * 
 	 * @GetMapping("/salaryFilter/{query}") public Map<Long, EmployeeDto>
 	 * getAllEmployeeSalaryGreaterThan(@PathVariable int query) { Map<Long,
 	 * EmployeeDto> resultMap = employees. entrySet(). stream(). filter(map ->
