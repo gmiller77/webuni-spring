@@ -16,5 +16,4 @@ public class DefaultEmployeeService implements EmployeeService {
 	public int getPayRaisePercent(Employee employee) {
 		return config.getRaise().getDef().getPercent();
 	}
-
 }
