@@ -1,5 +1,6 @@
 package hu.webuni.hr.greg77.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyDto {
@@ -7,7 +8,7 @@ public class CompanyDto {
 	private String companyIdNumber;
 	private String name;
 	private String address;
-	private List<EmployeeDto> employees;
+	private List<EmployeeDto> employees = new ArrayList<>();
 
 	public CompanyDto() {
 	}
@@ -17,6 +18,14 @@ public class CompanyDto {
 		this.companyIdNumber = companyIdNumber;
 		this.name = name;
 		this.address = address;
+	}
+
+	public CompanyDto(long id, String companyIdNumber, String name, String address, List<EmployeeDto> employees) {
+		this.id = id;
+		this.companyIdNumber = companyIdNumber;
+		this.name = name;
+		this.address = address;
+		this.employees = employees;
 	}
 
 	public long getId() {

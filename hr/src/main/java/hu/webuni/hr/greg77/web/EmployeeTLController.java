@@ -59,16 +59,18 @@ public class EmployeeTLController {
 	private int findEmployeeIndexById(long id) {
 		long idx = 100;
 		for (EmployeeDto e : thymeEmployees)
-			if (e.getId() == id)
+			if (e.getId() == id) {
 				idx = thymeEmployees.indexOf(e);
+				break;
+			}
 		return (int) idx;
 	}
 
-	@PostMapping("/employees/{id}")
-	public String updateEmployee(@PathVariable long id, EmployeeDto employee) {
-		System.out.println("Módosított elem indexe: " + id);
-		thymeEmployees.set(findEmployeeIndexById(id), employee);
-		return "employees";
+//	FONTOS: a HTML <form> részében van megadva, hogy ez a metódus fogja a modelben visszakapni az ojjektumot modelben
+	@PostMapping("/updateEmployee")
+	public String updateEmployee(EmployeeDto employee) {
+		thymeEmployees.set(findEmployeeIndexById(employee.getId()), employee);
+		return "redirect:employees";
 	}
 
 }
