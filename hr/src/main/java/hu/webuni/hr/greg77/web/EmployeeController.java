@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import hu.webuni.hr.greg77.dto.EmployeeDto;
+import hu.webuni.hr.greg77.service.NonPositiveSalaryException;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -41,7 +45,7 @@ public class EmployeeController {
 		return new ArrayList<>(employees.values());
 	}
 
-	@GetMapping("/{id}")
+/*	@GetMapping("/{id}")
 	public ResponseEntity<EmployeeDto> getById(@PathVariable long id) {
 		EmployeeDto employeeDto = employees.get(id);
 		if (employeeDto != null)
@@ -49,15 +53,27 @@ public class EmployeeController {
 		else
 			return ResponseEntity.notFound().build();
 	}
+*/
+	
+	@GetMapping("/{id}")
+	public EmployeeDto getById(@PathVariable long id) {
+		EmployeeDto employeeDto = employees.get(id);
+		if (employeeDto != null)
+			return employeeDto;
+		else
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+	}
 
 	@PostMapping
-	public EmployeeDto createEmployee(@RequestBody EmployeeDto employeeDto) {
+	public EmployeeDto createEmployee(@RequestBody @Valid EmployeeDto employeeDto) {
+		checkPositiveSalary(employeeDto.getSalary());
 		employees.put(employeeDto.getId(), employeeDto);
 		return employeeDto;
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id, @RequestBody EmployeeDto employeeDto) {
+	public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id, @RequestBody @Valid EmployeeDto employeeDto) {
+		checkPositiveSalary(employeeDto.getSalary());
 		if (!employees.containsKey(id)) {
 			return ResponseEntity.notFound().build();
 		}
@@ -65,6 +81,12 @@ public class EmployeeController {
 		employeeDto.setId(id);
 		employees.put(id, employeeDto);
 		return ResponseEntity.ok(employeeDto);
+	}
+
+	private void checkPositiveSalary(int salary) {
+		if (salary <= 0)
+			throw new NonPositiveSalaryException(salary);
+		
 	}
 
 	@DeleteMapping("/{id}")

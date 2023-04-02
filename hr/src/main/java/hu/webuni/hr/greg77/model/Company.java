@@ -1,34 +1,27 @@
-package hu.webuni.hr.greg77.dto;
+package hu.webuni.hr.greg77.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.PositiveOrZero;
-
-public class CompanyDto {
+public class Company {
 	
-	@PositiveOrZero
 	private long id;
-	@NotEmpty
 	private String companyIdNumber;
-	@NotEmpty
 	private String name;
-	@NotEmpty
 	private String address;
-	private List<EmployeeDto> employees = new ArrayList<>();
+	private List<Employee> employees = new ArrayList<>();
 
-	public CompanyDto() {
+	public Company() {
 	}
 
-	public CompanyDto(long id, String companyIdNumber, String name, String address) {
+	public Company(long id, String companyIdNumber, String name, String address) {
 		this.id = id;
 		this.companyIdNumber = companyIdNumber;
 		this.name = name;
 		this.address = address;
 	}
 
-	public CompanyDto(long id, String companyIdNumber, String name, String address, List<EmployeeDto> employees) {
+	public Company(long id, String companyIdNumber, String name, String address, List<Employee> employees) {
 		this.id = id;
 		this.companyIdNumber = companyIdNumber;
 		this.name = name;
@@ -68,11 +61,11 @@ public class CompanyDto {
 		this.address = address;
 	}
 
-	public List<EmployeeDto> getEmployees() {
+	public List<Employee> getEmployees() {
 		return employees;
 	}
 
-	public void setEmployees(List<EmployeeDto> employees) {
+	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 	}
 

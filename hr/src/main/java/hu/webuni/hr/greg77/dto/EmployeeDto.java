@@ -2,11 +2,19 @@ package hu.webuni.hr.greg77.dto;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Positive;
+
 public class EmployeeDto {
 	private long id;
+	@NotEmpty
 	private String name;
+	@NotEmpty
 	private String position;
+	@Positive
 	private int salary;
+	@Past
 	private LocalDateTime startDate;
 
 	public EmployeeDto() {
