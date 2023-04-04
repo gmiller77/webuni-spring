@@ -12,28 +12,7 @@ import hu.webuni.hr.greg77.config.HrConfigProperties.SmartRaisePercent;
 import hu.webuni.hr.greg77.model.Employee;
 
 @Service
-public class SmartEmployeeService implements EmployeeService {
-
-//	@Value("${smart.limit1}")
-//	private int smartLimit1;
-//	
-//	@Value("${smart.percent1}")
-//	private int smartPercent1;
-//	
-//	@Value("${smart.limit2}")
-//	private int smartLimit2;
-//	
-//	@Value("${smart.percent2}")
-//	private int smartPercent2;
-//	
-//	@Value("${smart.limit3}")
-//	private int smartLimit3;
-//	
-//	@Value("${smart.percent3}")
-//	private int smartPercent3;
-//	
-//	@Value("${smart.defaultPercent}")
-//	private int defaultPercent;
+public class SmartEmployeeService extends AbstractEmployeeService {
 
 	@Autowired
 	HrConfigProperties config;

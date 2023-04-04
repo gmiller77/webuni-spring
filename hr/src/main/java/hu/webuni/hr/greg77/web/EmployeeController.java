@@ -1,14 +1,11 @@
 package hu.webuni.hr.greg77.web;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,104 +17,93 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import hu.webuni.hr.greg77.EmployeeMapper;
 import hu.webuni.hr.greg77.dto.EmployeeDto;
-import hu.webuni.hr.greg77.service.NonPositiveSalaryException;
+import hu.webuni.hr.greg77.model.Employee;
+import hu.webuni.hr.greg77.service.EmployeeService;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
 
-	private Map<Long, EmployeeDto> employees = new HashMap<>();
-
-	{
-		employees.put(1L, new EmployeeDto(1L, "Anna Smith", "chief", 30_000, LocalDateTime.now().minusMonths(130)));
-		employees.put(2L, new EmployeeDto(2L, "Bob Tailor", "assistant", 12_000, LocalDateTime.now().minusMonths(119)));
-		employees.put(3L,
-				new EmployeeDto(3L, "Charles Adams", "section head", 24_000, LocalDateTime.now().minusMonths(74)));
-		employees.put(4L,
-				new EmployeeDto(4L, "Diane Kerrigan", "adjutant", 15_000, LocalDateTime.now().minusMonths(55)));
-		employees.put(5L, new EmployeeDto(5L, "Eric Tesla", "technician", 8_000, LocalDateTime.now().minusMonths(28)));
-	}
-
+	@Autowired
+	EmployeeService employeeService;
+	
+	@Autowired
+	EmployeeMapper employeeMapper;
+	
 	@GetMapping
 	public List<EmployeeDto> getAll() {
-		return new ArrayList<>(employees.values());
+		return new ArrayList<>(employeeMapper.employeesToDtos(employeeService.findAll()));
 	}
-
-/*	@GetMapping("/{id}")
-	public ResponseEntity<EmployeeDto> getById(@PathVariable long id) {
-		EmployeeDto employeeDto = employees.get(id);
-		if (employeeDto != null)
-			return ResponseEntity.ok(employeeDto);
-		else
-			return ResponseEntity.notFound().build();
-	}
-*/
 	
 	@GetMapping("/{id}")
 	public EmployeeDto getById(@PathVariable long id) {
-		EmployeeDto employeeDto = employees.get(id);
-		if (employeeDto != null)
-			return employeeDto;
+		Employee employee = employeeService.findById(id);
+		if (employee != null)
+			return employeeMapper.employeeToDto(employee);
 		else
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	}
 
 	@PostMapping
 	public EmployeeDto createEmployee(@RequestBody @Valid EmployeeDto employeeDto) {
-		checkPositiveSalary(employeeDto.getSalary());
-		employees.put(employeeDto.getId(), employeeDto);
-		return employeeDto;
+		Employee employee = employeeService.save(employeeMapper.dtoToEmployee(employeeDto));				
+		return employeeMapper.employeeToDto(employee);
 	}
-
+	
+	/*
 	@PutMapping("/{id}")
 	public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id, @RequestBody @Valid EmployeeDto employeeDto) {
 		checkPositiveSalary(employeeDto.getSalary());
 		if (!employees.containsKey(id)) {
 			return ResponseEntity.notFound().build();
 		}
-
 		employeeDto.setId(id);
 		employees.put(id, employeeDto);
 		return ResponseEntity.ok(employeeDto);
 	}
+	*/
+	
+	@PutMapping("/{id}")
+	public EmployeeDto modifyEmployee(@PathVariable long id, @RequestBody @Valid EmployeeDto employeeDto) {	
+		Employee employee = employeeService.put(id, employeeMapper.dtoToEmployee(employeeDto));
+		return employeeMapper.employeeToDto(employee);
+	}
 
+	/*
 	private void checkPositiveSalary(int salary) {
 		if (salary <= 0)
 			throw new NonPositiveSalaryException(salary);
-		
 	}
+	*/
 
 	@DeleteMapping("/{id}")
 	public void deleteEmployee(@PathVariable long id) {
-		employees.remove(id);
+		employeeService.delete(id);
 	}
 
 	// @PathVariable megoldás - ez működött, ez lett elfogadva
 	@GetMapping("/salaryFilter/{query}")
 	public List<EmployeeDto> getAllEmployeeSalaryGreaterThan(@PathVariable int query) {
-		return employees.values().stream().
-				filter(e -> e.getSalary() >= query).
-				collect(Collectors.toList());
+		return employeeMapper.employeesToDtos(
+				employeeService.findAll()
+				.stream()
+				.filter(e -> e.getSalary() >= query)
+				.collect(Collectors.toList())
+				);
 	}
 
 	// @RequestParam-os megoldás
 	@GetMapping("/FilterBySalary")	
 	public List<EmployeeDto> getAllEmployeeSalaryGreaterThan2(@RequestParam("salaryMin") int limit) {
-		return employees.values().stream().
-				filter(e -> e.getSalary() >= limit).
-				collect(Collectors.toList());
+		return employeeMapper.employeesToDtos(
+				employeeService.findAll()
+				.stream()
+				.filter(e -> e.getSalary() >= limit)
+				.collect(Collectors.toList())
+				);
 	}
-
-	/*
-	 * Map-es megoldás
-	 * 
-	 * @GetMapping("/salaryFilter/{query}") public Map<Long, EmployeeDto>
-	 * getAllEmployeeSalaryGreaterThan(@PathVariable int query) { Map<Long,
-	 * EmployeeDto> resultMap = employees. entrySet(). stream(). filter(map ->
-	 * map.getValue().getSalary() >= query). collect(Collectors.toMap(map ->
-	 * map.getKey(), map -> map.getValue())); return resultMap; }
-	 */
 
 }
