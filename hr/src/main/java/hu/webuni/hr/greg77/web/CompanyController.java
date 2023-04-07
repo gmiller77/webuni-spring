@@ -18,9 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import hu.webuni.hr.greg77.CompanyMapper;
+import hu.webuni.hr.greg77.EmployeeMapper;
 import hu.webuni.hr.greg77.dto.CompanyDto;
+import hu.webuni.hr.greg77.dto.EmployeeDto;
 import hu.webuni.hr.greg77.model.Company;
+import hu.webuni.hr.greg77.model.Employee;
 import hu.webuni.hr.greg77.service.CompanyService;
+import hu.webuni.hr.greg77.service.EmployeeService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -31,7 +35,13 @@ public class CompanyController {
 	CompanyService companyService;
 	
 	@Autowired
+	EmployeeService employeeService;
+	
+	@Autowired
 	CompanyMapper companyMapper;
+	
+	@Autowired
+	EmployeeMapper employeeMapper;
 	
 	/* WEEK-2 solution:
 	 * @GetMapping public List<CompanyDto> getAll() { return new
@@ -65,7 +75,6 @@ public class CompanyController {
 //		return new ArrayList<>(companies.values());
 //	}
 //	*/
-//		
 
  	@GetMapping("/{id}")
 	public CompanyDto getById(@PathVariable long id) {
@@ -98,36 +107,39 @@ public class CompanyController {
 		return companyMapper.companyToDto(company);
 	}
 
-
 	@DeleteMapping("/{id}")
 	public void deleteCompany(@PathVariable long id) {
 		companyService.delete(id);
 	}
-//	
-//	// LIVE EVENT (ZOOM) solution
-//	@PostMapping("/{id}/employees")
-//	public CompanyDto addNewEmployee(@PathVariable long id, @RequestBody EmployeeDto employeeDto) {
+	
+	// refactored from last week's LIVE EVENT (ZOOM) solution
+	@PostMapping("/{id}/employees")
+	public CompanyDto addNewEmployee(@PathVariable long id, @RequestBody EmployeeDto employeeDto) {
 //		CompanyDto company = getCompanyOrThrow(id);
-//		company.getEmployees().add(employeeDto);
-//		return company;
-//	}
-//	
-//	// LIVE EVENT (ZOOM) solution
-//	@DeleteMapping("/{id}/employees/{employeeId}")
-//	public CompanyDto deleteEmployeeFromCompany(@PathVariable long id, @PathVariable long employeeId) {
+		Company company = companyService.findById(id);
+		Employee newEmployee = employeeMapper.dtoToEmployee(employeeDto);
+		company.getEmployees().add(newEmployee);
+		return companyMapper.companyToDto(company);
+	}
+	
+	// LIVE EVENT (ZOOM) solution
+	@DeleteMapping("/{id}/employees/{employeeId}")
+	public CompanyDto deleteEmployeeFromCompany(@PathVariable long id, @PathVariable long employeeId) {
 //		CompanyDto company = getCompanyOrThrow(id);
-//		company.getEmployees().removeIf(emp -> emp.getId() == employeeId);
-//		return company;
-//	}
-//	
-//	// LIVE EVENT (ZOOM) solution
-//	@PutMapping("/{id}/employees")
-//	public CompanyDto replaceAllEmployees(@PathVariable long id, @RequestBody List<EmployeeDto> newEmployees) {
+		Company company = companyService.findById(id);
+		company.getEmployees().removeIf(emp -> emp.getId() == employeeId);
+		return companyMapper.companyToDto(company);
+	}
+	
+	// refactored from LIVE EVENT (ZOOM) solution
+	@PutMapping("/{id}/employees")
+	public CompanyDto replaceAllEmployees(@PathVariable long id, @RequestBody List<EmployeeDto> newEmployeeDtos) {
 //		CompanyDto company = getCompanyOrThrow(id);
-//		company.setEmployees(newEmployees);
-//		return company;
-//	}	
-//	
+		Company company = companyService.findById(id);		
+		company.setEmployees(employeeMapper.dtosToEmployees(newEmployeeDtos));				
+		return companyMapper.companyToDto(company);
+	}	
+	
 	private Company copyCompanyWithoutEmployees(Company company) {
 		return new Company(company.getId(), company.getCompanyIdNumber(), company.getName(),
 				company.getAddress(), null);

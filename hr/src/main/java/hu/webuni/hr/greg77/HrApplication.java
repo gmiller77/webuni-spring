@@ -34,6 +34,7 @@ public class HrApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		System.out.println("Main app console 'salaryService.getNewSalary()' check:");
 		for (Employee e : employees) {
 			System.out.println(e.toString() + " ---> raised salary: " + salaryService.getNewSalary(e));
 		}
