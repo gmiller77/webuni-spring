@@ -67,4 +67,15 @@ public class EmployeeDto {
 	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
+	
+	@Override
+	public String toString() {
+//		String str = "ID: " + this.id + ", name: " + this.name + ", positon: " + this.position + ", salary: " + this.salary
+//				+ ", started working: " + this.startDate.toLocalDate();
+		var str = "|ID: " + String.format("%-4s", this.id) + "|name: " + String.format("%-20s", this.name)
+				+ "|position: " + String.format("%-15s", this.position) + "|salary: "
+				+ String.format("%5d", this.salary) + " €" + "|started: "
+				+ String.format("%10s|", this.startDate.toLocalDate());
+		return str;
+	}
 }

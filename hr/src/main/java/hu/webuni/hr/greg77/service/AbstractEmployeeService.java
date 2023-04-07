@@ -46,8 +46,9 @@ public abstract class AbstractEmployeeService implements EmployeeService {
 
 	@Override
 	public Employee update(long id, Employee employee) {
-		// TODO Auto-generated method stub
-		return null;
+		employee.setId(id);		
+		employees.put(id, employee);
+		return employee;
 	}
 
 	@Override
