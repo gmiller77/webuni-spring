@@ -1,9 +1,18 @@
 package hu.webuni.airport.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
 
+
+@Entity
+//@NamedQuery(name="Airport.countByIata", query = "SELECT COUNT(a.id) from Airport a WHERE a.iata = :iata")
+//@NamedQuery(name="Airport.countByIataAndIdNotIn", query = "SELECT COUNT(a.id) from Airport a WHERE a.iata = :iata AND a.id != :id")
 public class Airport {
 
+	@Id
+	@GeneratedValue
 	private long id;
 	@Size(min = 3, max = 20)
 	private String name;

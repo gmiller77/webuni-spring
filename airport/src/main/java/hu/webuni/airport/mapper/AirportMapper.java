@@ -10,7 +10,7 @@ import hu.webuni.airport.model.Airport;
 @Mapper(componentModel = "spring")
 public interface AirportMapper {
 	
-	List<AirportDto> airportToDtos (List<Airport> airports);
+	List<AirportDto> airportsToDtos (List<Airport> airports);
 
 	AirportDto airportToDto(Airport airport);
 
