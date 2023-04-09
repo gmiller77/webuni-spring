@@ -37,7 +37,7 @@ public class CompanyController {
 	@Autowired
 	EmployeeService employeeService;
 	
-	@Autowired
+//	@Autowired
 	CompanyMapper companyMapper;
 	
 	@Autowired

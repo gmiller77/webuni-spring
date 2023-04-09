@@ -2,10 +2,12 @@ package hu.webuni.hr.greg77.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,11 +42,10 @@ public class EmployeeController {
 	
 	@GetMapping("/{id}")
 	public EmployeeDto getById(@PathVariable long id) {
-		Employee employee = employeeService.findById(id);
-		if (employee != null)
-			return employeeMapper.employeeToDto(employee);
-		else
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		Employee employee = employeeService.findById(id)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		
+		return employeeMapper.employeeToDto(employee);
 	}
 
 	@PostMapping
@@ -53,32 +54,18 @@ public class EmployeeController {
 		return employeeMapper.employeeToDto(employee);
 	}
 	
-	/*
 	@PutMapping("/{id}")
 	public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id, @RequestBody @Valid EmployeeDto employeeDto) {
-		checkPositiveSalary(employeeDto.getSalary());
-		if (!employees.containsKey(id)) {
-			return ResponseEntity.notFound().build();
+		Employee employee = employeeMapper.dtoToEmployee(employeeDto);
+		employee.setId(id);
+		try {
+			EmployeeDto savedEmployeeDto = employeeMapper.employeeToDto(employeeService.update(employee));
+			return ResponseEntity.ok(savedEmployeeDto);
+		}catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
-		employeeDto.setId(id);
-		employees.put(id, employeeDto);
-		return ResponseEntity.ok(employeeDto);
 	}
-	*/
 	
-	@PutMapping("/{id}")
-	public EmployeeDto modifyEmployee(@PathVariable long id, @RequestBody @Valid EmployeeDto employeeDto) {	
-		Employee employee = employeeService.update(id, employeeMapper.dtoToEmployee(employeeDto));
-		return employeeMapper.employeeToDto(employee);
-	}
-
-	/*
-	private void checkPositiveSalary(int salary) {
-		if (salary <= 0)
-			throw new NonPositiveSalaryException(salary);
-	}
-	*/
-
 	@DeleteMapping("/{id}")
 	public void deleteEmployee(@PathVariable long id) {
 		employeeService.delete(id);
