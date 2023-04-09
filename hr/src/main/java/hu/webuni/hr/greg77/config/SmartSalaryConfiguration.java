@@ -14,9 +14,6 @@ public class SmartSalaryConfiguration {
 	@Bean
 	public EmployeeService employeeService() {
 		return new SmartEmployeeService();
-		/*
-		 * git test
-		 */
 	}
 
 }
