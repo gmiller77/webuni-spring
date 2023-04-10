@@ -1,5 +1,6 @@
 package hu.webuni.hr.greg77.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,5 +20,12 @@ public interface EmployeeService {
 	public Employee update(Employee employee);
 	
 	public void delete(long id);
+	
+	public List<Employee> findByPosition(String position);
+	
+	public List<Employee> findByNameStartsWith(String nameStartsWith);
+	
+	public List<Employee> findByStartDateBetweenDates(LocalDateTime dateStart, LocalDateTime dateEnd);
+	
 }
  

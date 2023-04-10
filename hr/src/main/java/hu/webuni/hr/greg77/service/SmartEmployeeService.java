@@ -19,6 +19,10 @@ public class SmartEmployeeService extends AbstractEmployeeService {
 		super(employeeRepository);
 	}
 
+	public SmartEmployeeService() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Autowired
 	HrConfigProperties config;
 

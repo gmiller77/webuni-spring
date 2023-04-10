@@ -1,8 +1,11 @@
 package hu.webuni.hr.greg77.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import hu.webuni.hr.greg77.model.Employee;
 import hu.webuni.hr.greg77.repository.EmployeeRepository;
@@ -10,6 +13,7 @@ import jakarta.transaction.Transactional;
 
 public abstract class AbstractEmployeeService implements EmployeeService {
 
+	@Autowired
 	EmployeeRepository employeeRepository;
 
 	/*
@@ -30,6 +34,11 @@ public abstract class AbstractEmployeeService implements EmployeeService {
 	public AbstractEmployeeService(EmployeeRepository employeeRepository) {
 		super();
 		this.employeeRepository = employeeRepository;
+	}
+	
+	public AbstractEmployeeService() {
+		super();
+//		this.employeeRepository = employeeRepository;
 	}
 
 	@Transactional
@@ -56,6 +65,18 @@ public abstract class AbstractEmployeeService implements EmployeeService {
 	@Transactional
 	public void delete(long id) {
 		employeeRepository.deleteById(id);
+	}
+	
+	public List<Employee> findByPosition(String pos) {
+		return employeeRepository.findByPosition(pos);
+	}
+	
+	public List<Employee> findByNameStartsWith(String nameStartsWith) {
+		return employeeRepository.findByNameStartingWithIgnoreCase(nameStartsWith);
+	}
+	
+	public List<Employee> findByStartDateBetweenDates(LocalDateTime dateStart, LocalDateTime dateEnd){
+		return employeeRepository.findByStartDateBetween(dateStart, dateEnd);
 	}
 	
 }

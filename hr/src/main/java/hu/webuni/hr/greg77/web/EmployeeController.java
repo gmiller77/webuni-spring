@@ -1,5 +1,6 @@
 package hu.webuni.hr.greg77.web;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -92,5 +93,19 @@ public class EmployeeController {
 				.collect(Collectors.toList())
 				);
 	}
+	
+	@GetMapping("/position")	
+	public List<EmployeeDto> getAllEmployeesByPosition(@RequestParam("pos") String position) {
+		return new ArrayList<>(employeeMapper.employeesToDtos(employeeService.findByPosition(position)));
+	}
+	
+	@GetMapping("/name")	
+	public List<EmployeeDto> getAllEmployeesByNamesLike(@RequestParam("name") String nameStartsWith) {
+		return new ArrayList<>(employeeMapper.employeesToDtos(employeeService.findByNameStartsWith(nameStartsWith)));
+	}
 
+	@GetMapping("/startDateBetween")
+	public List<EmployeeDto> getAllEmployeesByStartDateBetweenDates(@RequestParam("start") LocalDateTime startDate, @RequestParam("end") LocalDateTime endDate) {
+		return new ArrayList<>(employeeMapper.employeesToDtos(employeeService.findByStartDateBetweenDates(startDate, endDate)));
+	}
 }

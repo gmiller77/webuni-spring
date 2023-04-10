@@ -14,6 +14,10 @@ public class DefaultEmployeeService extends AbstractEmployeeService{
 		super(employeeRepository);
 	}
 
+	public DefaultEmployeeService() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Autowired
 	HrConfigProperties config;
 
