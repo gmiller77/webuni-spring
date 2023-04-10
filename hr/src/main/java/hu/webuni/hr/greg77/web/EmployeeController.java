@@ -94,18 +94,21 @@ public class EmployeeController {
 				);
 	}
 	
-	@GetMapping("/position")	
-	public List<EmployeeDto> getAllEmployeesByPosition(@RequestParam("pos") String position) {
+//	@GetMapping("/position")	
+	@GetMapping(value = "/search", params = "position")	
+	public List<EmployeeDto> getAllEmployeesByPosition(@RequestParam String position) {
 		return new ArrayList<>(employeeMapper.employeesToDtos(employeeService.findByPosition(position)));
 	}
 	
-	@GetMapping("/name")	
-	public List<EmployeeDto> getAllEmployeesByNamesLike(@RequestParam("name") String nameStartsWith) {
+//	@GetMapping("/name")	
+	@GetMapping(value = "/search", params = "nameStartsWith")	
+	public List<EmployeeDto> getAllEmployeesByNamesLike(@RequestParam String nameStartsWith) {
 		return new ArrayList<>(employeeMapper.employeesToDtos(employeeService.findByNameStartsWith(nameStartsWith)));
 	}
 
-	@GetMapping("/startDateBetween")
-	public List<EmployeeDto> getAllEmployeesByStartDateBetweenDates(@RequestParam("start") LocalDateTime startDate, @RequestParam("end") LocalDateTime endDate) {
+//	@GetMapping("/startDateBetween")
+	@GetMapping(value = "/search", params = {"startDate", "endDate"})
+	public List<EmployeeDto> getAllEmployeesByStartDateBetweenDates(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
 		return new ArrayList<>(employeeMapper.employeesToDtos(employeeService.findByStartDateBetweenDates(startDate, endDate)));
 	}
 }
