@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>HR application</title>
-<title>Add CSS and JS to Thymeleaf</title>
-<link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet" />
+	<meta charset="UTF-8">
+	<title>HR application</title>
+	<title>Add CSS and JS to Thymeleaf</title>
+	<link th:href="@{/styles/cssandjs/main.css}" rel="stylesheet" />
 </head>
+
 <body>
-	<h1> Employee data - employee</h1>	
-	<p th:text="'ID: '+ ${employeeToEdit.id}" /> 	
+	<h1> Employee data - employee</h1>
+	<p th:text="'ID: '+ ${employeeToEdit.id}" />
 	<br>
 	<form th:action="@{/updateEmployee}" method=post th:object="${employeeToEdit}">
-			Id: <span th:text="*{id}" > </span><br>
-			<input type="hidden" th:field="*{id}" />
-			Name: <input th:field="*{name}" /> <br>
-			Position: <input th:field="*{position}" /> <br>
-			Salary: <input type="number" th:field="*{salary}" /> <br>
-			Start date: <input th:field="*{startDate}" /><br>
-<!-- 			Start date: <input type="datetime-local" th:field="*{startDate}" /> <br>		 -->
-		<input type="submit" value="Update" />		
+		Id: <span th:text="*{id}"> </span><br>
+		<input type="hidden" th:field="*{id}" />
+		Name: <input th:field="*{name}" /> <br>
+		Position: <input th:field="*{position}" /> <br>
+		Salary: <input type="number" th:field="*{salary}" /> <br>
+		Start date: <input th:field="*{startDate}" /><br>
+		<!-- 			Start date: <input type="datetime-local" th:field="*{startDate}" /> <br>		 -->
+		<input type="submit" value="Update" />
 	</form>
 </body>
+
 </html>
