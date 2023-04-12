@@ -1,4 +1,4 @@
-package hu.webuni.hr.greg77;
+package hu.webuni.hr.greg77.mapper;
 
 import java.util.List;
 
