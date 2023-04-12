@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import hu.webuni.hr.greg77.EmployeeMapper;
 import hu.webuni.hr.greg77.dto.EmployeeDto;
+import hu.webuni.hr.greg77.mapper.EmployeeMapper;
 import hu.webuni.hr.greg77.model.Employee;
 import hu.webuni.hr.greg77.service.EmployeeService;
 import jakarta.validation.Valid;
