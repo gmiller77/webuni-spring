@@ -5,23 +5,27 @@ import java.time.LocalDateTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Employee {
 	
 	@Id
 	@GeneratedValue
-	private long id;
+	private Long id;
 	private String name;
 	private String position;
 	private int salary;
 	private LocalDateTime startDate;
 
+	@ManyToOne	
+	private Company company;
+	
 	public Employee() {
 		super();
 	}
 
-	public Employee(long id, String name, String position, int salary, LocalDateTime startDate) {
+	public Employee(Long id, String name, String position, int salary, LocalDateTime startDate) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -30,11 +34,11 @@ public class Employee {
 		this.startDate = startDate;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -68,6 +72,14 @@ public class Employee {
 
 	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
+	}
+	
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	@Override

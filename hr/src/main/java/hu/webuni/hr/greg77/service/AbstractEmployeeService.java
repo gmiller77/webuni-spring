@@ -2,14 +2,12 @@ package hu.webuni.hr.greg77.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import hu.webuni.hr.greg77.model.Employee;
 import hu.webuni.hr.greg77.repository.EmployeeRepository;
-import jakarta.transaction.Transactional;
 
 public abstract class AbstractEmployeeService implements EmployeeService {
 
@@ -29,7 +27,7 @@ public abstract class AbstractEmployeeService implements EmployeeService {
 	 * LocalDateTime.now().minusMonths(28))); }
 	 */
 
-	public abstract int getPayRaisePercent(Employee employee);
+//	public abstract int getPayRaisePercent(Employee employee);
 
 	public AbstractEmployeeService(EmployeeRepository employeeRepository) {
 		super();
@@ -41,11 +39,29 @@ public abstract class AbstractEmployeeService implements EmployeeService {
 //		this.employeeRepository = employeeRepository;
 	}
 
+	
+	@Override
+	public Employee save(Employee employee) {
+		if (employee.getId() != null && employee.getId() != 0L)
+			return null;
+		return employeeRepository.save(employee);
+	}
+	
+	/*
 	@Transactional
 	public Employee save(Employee employee) {
 		return employeeRepository.save(employee);
 	}
+	*/
 
+	@Override
+	public Employee update(Employee employee) {
+		if(!employeeRepository.existsById(employee.getId()))
+			return null;
+		return employeeRepository.save(employee);
+	}
+	
+	/*
 	@Transactional
 	public Employee update(Employee employee) {
 		if (employeeRepository.existsById(employee.getId()))
@@ -53,19 +69,41 @@ public abstract class AbstractEmployeeService implements EmployeeService {
 		else
 			throw new NoSuchElementException();
 	}
+	*/
 
+	@Override
 	public List<Employee> findAll() {
 		return employeeRepository.findAll();
 	}
+	
+	/*
+	public List<Employee> findAll() {
+		return employeeRepository.findAll();
+	}
+	*/
 
+	@Override
+	public Optional<Employee> findById(long id) {		
+		return employeeRepository.findById(id);
+	}
+	/*
 	public Optional<Employee> findById(long id) {
 		return employeeRepository.findById(id);
 	}
+	*/
 
+	@Override
+	public void delete(long id) {
+		employeeRepository.deleteById(id);
+	}	
+	/*
 	@Transactional
 	public void delete(long id) {
 		employeeRepository.deleteById(id);
 	}
+	*/
+	
+	
 	
 	public List<Employee> findByPosition(String pos) {
 		return employeeRepository.findByPosition(pos);

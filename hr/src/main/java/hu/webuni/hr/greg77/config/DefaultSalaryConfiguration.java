@@ -9,7 +9,7 @@ import hu.webuni.hr.greg77.service.EmployeeService;
 
 @Configuration
 @Profile("!smart")
-public class SalaryConfiguration {
+public class DefaultSalaryConfiguration {
 
 	@Bean
 	public EmployeeService employeeService() {

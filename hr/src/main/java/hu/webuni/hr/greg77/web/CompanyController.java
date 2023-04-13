@@ -1,6 +1,5 @@
 package hu.webuni.hr.greg77.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,12 +19,8 @@ import org.springframework.web.server.ResponseStatusException;
 import hu.webuni.hr.greg77.dto.CompanyDto;
 import hu.webuni.hr.greg77.dto.EmployeeDto;
 import hu.webuni.hr.greg77.mapper.CompanyMapper;
-import hu.webuni.hr.greg77.mapper.EmployeeMapper;
 import hu.webuni.hr.greg77.model.Company;
-import hu.webuni.hr.greg77.model.Employee;
 import hu.webuni.hr.greg77.service.CompanyService;
-import hu.webuni.hr.greg77.service.EmployeeService;
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/companies")
@@ -35,13 +30,8 @@ public class CompanyController {
 	CompanyService companyService;
 	
 	@Autowired
-	EmployeeService employeeService;
-	
-//	@Autowired
 	CompanyMapper companyMapper;
 	
-	@Autowired
-	EmployeeMapper employeeMapper;
 	
 	/* WEEK-2 solution:
 	 * @GetMapping public List<CompanyDto> getAll() { return new
@@ -49,6 +39,19 @@ public class CompanyController {
 	 */
 	
 	// WEEK-3 / LIVE EVENT (ZOOM) solution for added requirements: "...?full=true" parameter
+	
+	@GetMapping
+	public List<CompanyDto> getAll(@RequestParam Optional<Boolean> full) {
+
+		List<Company> companies = companyService.findAll();
+		if(full.orElse(false)) {
+			return companyMapper.companiesToDtos(companies);
+		} else {
+			return companyMapper.companiesToSummaryDtos(companies);
+		}
+	}	
+	
+	/*
 	@GetMapping
 	public List<CompanyDto> getAll(@RequestParam Optional<Boolean> full) {		
 		return full.orElse(false)
@@ -60,7 +63,8 @@ public class CompanyController {
 									.map(this::copyCompanyWithoutEmployees)
 									.toList()));
 //				: companies.values().stream().map(this::copyCompanyWithoutEmployees).toList();								
-	}	
+	}
+	*/	
 	
 //	/*
 //	megoldás JsonView-val
@@ -76,7 +80,18 @@ public class CompanyController {
 //	}
 //	*/
 
- 	@GetMapping("/{id}")
+	@GetMapping("/{id}")
+	public CompanyDto getById(@PathVariable long id, @RequestParam Optional<Boolean> full) {
+		Company company = companyService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		
+		if(full.orElse(false)) {
+			return companyMapper.companyToDto(company);
+		} else {
+			return companyMapper.companyToSummaryDto(company);
+		}
+	}
+	/*
+	@GetMapping("/{id}")
 	public CompanyDto getById(@PathVariable long id) {
 		Company company = companyService.findById(id);
 		if (company != null)
@@ -84,34 +99,65 @@ public class CompanyController {
 		else
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);		
 	}
+	*/
 
-//	
-//	@GetMapping("/{id}")
-//	public CompanyDto getById(@PathVariable long id) {
-//		CompanyDto companyDto = companies.get(id);
-//		if (companyDto != null)
-//			return companyDto;
-//		else
-//			throw new ResponseStatusException(HttpStatus.NOT_FOUND);		
-//	}
-//
+	@PostMapping
+	public CompanyDto createCompany(@RequestBody CompanyDto companyDto) {
+		return companyMapper.companyToDto(companyService.save(companyMapper.dtoToCompany(companyDto)));		
+	}
+	
+	/*
 	@PostMapping
 	public CompanyDto createCompany(@RequestBody @Valid CompanyDto companyDto) {
 		Company company = companyService.save(companyMapper.dtoToCompany(companyDto));				
 		return companyMapper.companyToDto(company);
 	}
+	*/
 	
 	@PutMapping("/{id}")
+	public CompanyDto modifyCompany(@PathVariable long id, @RequestBody CompanyDto companyDto) {
+      companyDto.setId(id);
+      Company updatedCompany = companyService.update(companyMapper.dtoToCompany(companyDto));
+      if (updatedCompany == null) {
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+      }
+      return companyMapper.companyToDto(updatedCompany);
+	}
+	/*
+	@PutMapping("/{id}")
 	public CompanyDto modifyCompany(@PathVariable long id, @RequestBody @Valid CompanyDto companyDto) {	
-		Company company = companyService.put(id, companyMapper.dtoToCompany(companyDto));
+		Company company = companyService.update(id, companyMapper.dtoToCompany(companyDto));
 		return companyMapper.companyToDto(company);
 	}
+	*/
 
 	@DeleteMapping("/{id}")
 	public void deleteCompany(@PathVariable long id) {
 		companyService.delete(id);
 	}
 	
+	@PostMapping("/{id}/employees")
+	public CompanyDto addNewEmployee(@PathVariable long id, @RequestBody EmployeeDto employeeDto){
+		Company company = companyService.addEmployee(id, companyMapper.dtoToEmployee(employeeDto));
+		return companyMapper.companyToDto(company);
+	}
+	
+	@DeleteMapping("/{id}/employees/{employeeId}")
+	public CompanyDto deleteEmployee(@PathVariable long id, @PathVariable long employeeId){
+		Company company = companyService.deleteEmployee(id, employeeId);
+		return companyMapper.companyToDto(company);
+	}
+	
+	
+	@PutMapping("/{id}/employees")
+	public CompanyDto replaceAllEmployees(@PathVariable long id, @RequestBody List<EmployeeDto> newEmployees){
+		Company company = companyService.replaceEmployees(id, companyMapper.dtosToEmployees(newEmployees));
+		return companyMapper.companyToDto(company);
+	}	
+	
+	
+	
+	/*
 	// refactored from last week's LIVE EVENT (ZOOM) solution
 	@PostMapping("/{id}/employees")
 	public CompanyDto addNewEmployee(@PathVariable long id, @RequestBody EmployeeDto employeeDto) {
@@ -144,6 +190,6 @@ public class CompanyController {
 		return new Company(company.getId(), company.getCompanyIdNumber(), company.getName(),
 				company.getAddress(), null);
 	}
-//	
+	*/
 	
 }

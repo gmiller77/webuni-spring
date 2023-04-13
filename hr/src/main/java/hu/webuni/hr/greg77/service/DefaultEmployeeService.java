@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 
 import hu.webuni.hr.greg77.config.HrConfigProperties;
 import hu.webuni.hr.greg77.model.Employee;
-import hu.webuni.hr.greg77.repository.EmployeeRepository;
 
 @Service
 public class DefaultEmployeeService extends AbstractEmployeeService{
 
+	/*
 	public DefaultEmployeeService(EmployeeRepository employeeRepository) {
 		super(employeeRepository);
 	}
@@ -17,6 +17,7 @@ public class DefaultEmployeeService extends AbstractEmployeeService{
 	public DefaultEmployeeService() {
 		// TODO Auto-generated constructor stub
 	}
+	*/
 
 	@Autowired
 	HrConfigProperties config;
