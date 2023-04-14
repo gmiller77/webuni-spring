@@ -103,7 +103,10 @@ public abstract class AbstractEmployeeService implements EmployeeService {
 	}
 	*/
 	
-	
+	public List<Employee> findBySalaryGreaterThanEqual(int minSalary){
+		return employeeRepository.findBySalaryGreaterThanEqual(minSalary);
+	}
+	;
 	
 	public List<Employee> findByPosition(String pos) {
 		return employeeRepository.findByPosition(pos);

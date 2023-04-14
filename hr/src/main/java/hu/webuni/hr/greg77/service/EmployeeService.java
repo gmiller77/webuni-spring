@@ -12,13 +12,15 @@ public interface EmployeeService {
 	
 	public Employee save(Employee employee);
 	
-	public List<Employee> findAll();
+	List<Employee> findAll();
 	
-	public Optional<Employee> findById(long id);
+	Optional<Employee> findById(long id);
 	
-	public Employee update(Employee employee);
+	Employee update(Employee employee);
 	
 	public void delete(long id);
+	
+	List<Employee> findBySalaryGreaterThanEqual(int minSalary);
 	
 	List<Employee> findByPosition(String position);
 	

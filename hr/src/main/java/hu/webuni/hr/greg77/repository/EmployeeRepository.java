@@ -15,6 +15,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	
 	List<Employee> findByStartDateBetween(LocalDateTime dateStart, LocalDateTime dateEnd);
 	
-	List<Employee> findBySalaryGreaterThan(Integer minSalary);
+	List<Employee> findBySalaryGreaterThanEqual(Integer minSalary);
 	
 }

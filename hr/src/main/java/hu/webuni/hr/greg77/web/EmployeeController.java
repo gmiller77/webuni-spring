@@ -3,7 +3,6 @@ package hu.webuni.hr.greg77.web;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,7 +45,7 @@ public class EmployeeController {
 		if(minSalary == null) {
 			employees = employeeService.findAll();
 		} else {
-			employees = employeeRepository.findBySalaryGreaterThan(minSalary);
+			employees = employeeRepository.findBySalaryGreaterThanEqual(minSalary);
 		}
 		return employeeMapper.employeesToDtos(employees);
 	}
@@ -129,23 +128,29 @@ public class EmployeeController {
 	// @PathVariable megoldás - ez működött, ez lett elfogadva
 	@GetMapping("/salaryFilter/{query}")
 	public List<EmployeeDto> getAllEmployeeSalaryGreaterThan(@PathVariable int query) {
+		return employeeMapper.employeesToDtos(employeeService.findBySalaryGreaterThanEqual(query));
+	/*	
 		return employeeMapper.employeesToDtos(
 				employeeService.findAll()
 				.stream()
 				.filter(e -> e.getSalary() >= query)
 				.collect(Collectors.toList())
 				);
+	*/
 	}
 
 	// @RequestParam-os megoldás
 	@GetMapping("/FilterBySalary")	
 	public List<EmployeeDto> getAllEmployeeSalaryGreaterThan2(@RequestParam("salaryMin") int limit) {
+		return employeeMapper.employeesToDtos(employeeService.findBySalaryGreaterThanEqual(limit));
+		/*
 		return employeeMapper.employeesToDtos(
 				employeeService.findAll()
 				.stream()
 				.filter(e -> e.getSalary() >= limit)
 				.collect(Collectors.toList())
 				);
+		*/
 	}
 	
 //	@GetMapping("/position")	
