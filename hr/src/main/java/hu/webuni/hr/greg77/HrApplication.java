@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import hu.webuni.hr.greg77.model.Employee;
+import hu.webuni.hr.greg77.service.InitDbService;
 import hu.webuni.hr.greg77.service.SalaryService;
 
 @SpringBootApplication
@@ -28,7 +29,8 @@ public class HrApplication implements CommandLineRunner {
 	@Autowired
 	SalaryService salaryService;
 
-	
+	@Autowired
+	InitDbService initDbService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(HrApplication.class, args);
@@ -40,6 +42,12 @@ public class HrApplication implements CommandLineRunner {
 		for (Employee e : employees) {
 			System.out.println(e.toString() + " ---> raised salary: " + salaryService.getNewSalary(e));
 		}
+		
+		initDbService.clearDB();
+		System.out.println("ALL records of 'Company' and 'Employee' tables have been DELETED, tables are empty.");
+		
+		initDbService.insertTestData();
+		System.out.println("TEST data for 'Company' and 'Employee' tables have been CREATED.");
 	}
 
 }

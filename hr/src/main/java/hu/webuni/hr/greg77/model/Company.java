@@ -14,25 +14,37 @@ public class Company {
 	@Id
 	@GeneratedValue
 	private Long id;
-	private String companyIdNumber;
+	private String companyIdNumber;		//cégjegyzékszám 99-99-999999 formátum
 	private String name;
 	private String address;
 
+//	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
 	@OneToMany(mappedBy = "company")
 	private List<Employee> employees;
+//	private List<Employee> employees = new ArrayList<>();
 	
 	public Company() {
 	}
 
+	/*
 	public Company(Long id, String companyIdNumber, String name, String address) {
 		this.id = id;
 		this.companyIdNumber = companyIdNumber;
 		this.name = name;
 		this.address = address;
 	}
+	*/
 
 	public Company(Long id, String companyIdNumber, String name, String address, List<Employee> employees) {
 		this.id = id;
+		this.companyIdNumber = companyIdNumber;
+		this.name = name;
+		this.address = address;
+		this.employees = employees;
+	}
+
+	public Company(String companyIdNumber, String name, String address, List<Employee> employees) {
+		super();
 		this.companyIdNumber = companyIdNumber;
 		this.name = name;
 		this.address = address;
@@ -73,10 +85,6 @@ public class Company {
 
 	public List<Employee> getEmployees() {
 		return employees;
-	}
-
-	public void setEmployees(List<Employee> employees) {
-		this.employees = employees;
 	}
 	
 	public void addEmployee(Employee employee) {

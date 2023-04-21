@@ -3,10 +3,12 @@ package hu.webuni.hr.greg77.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import hu.webuni.hr.greg77.dto.EmployeeDto;
 import hu.webuni.hr.greg77.model.Employee;
 
+//@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 @Mapper(componentModel = "spring")
 public interface EmployeeMapper {
 
@@ -16,5 +18,6 @@ public interface EmployeeMapper {
 
 	EmployeeDto employeeToDto(Employee employee);
 
+	@Mapping(target = "company", ignore = true)
 	Employee dtoToEmployee(EmployeeDto employeeDto);
 }

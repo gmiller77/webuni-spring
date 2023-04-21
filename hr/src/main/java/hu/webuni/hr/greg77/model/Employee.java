@@ -3,8 +3,10 @@ package hu.webuni.hr.greg77.model;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -18,7 +20,9 @@ public class Employee {
 	private int salary;
 	private LocalDateTime startDate;
 
-	@ManyToOne	
+//	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "company_id", nullable = false)
 	private Company company;
 	
 	public Employee() {
@@ -28,6 +32,14 @@ public class Employee {
 	public Employee(Long id, String name, String position, int salary, LocalDateTime startDate) {
 		super();
 		this.id = id;
+		this.name = name;
+		this.position = position;
+		this.salary = salary;
+		this.startDate = startDate;
+	}
+
+	public Employee(String name, String position, int salary, LocalDateTime startDate) {
+		super();
 		this.name = name;
 		this.position = position;
 		this.salary = salary;

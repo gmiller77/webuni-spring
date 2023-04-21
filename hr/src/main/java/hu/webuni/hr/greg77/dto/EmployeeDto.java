@@ -16,17 +16,32 @@ public class EmployeeDto {
 	private int salary;
 	@Past
 	private LocalDateTime startDate;
+//	private CompanyDto companyDto;
 
 	public EmployeeDto() {
+		super();
 	}
 
-	public EmployeeDto(long id, String name, String position, int salary, LocalDateTime startDate) {
+	public EmployeeDto(long id, @NotEmpty String name, @NotEmpty String position, @Positive int salary,
+			@Past LocalDateTime startDate) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.position = position;
 		this.salary = salary;
 		this.startDate = startDate;
 	}
+
+//	public EmployeeDto(long id, @NotEmpty String name, @NotEmpty String position, @Positive int salary,
+//			@Past LocalDateTime startDate, CompanyDto companyDto) {
+//		super();
+//		this.id = id;
+//		this.name = name;
+//		this.position = position;
+//		this.salary = salary;
+//		this.startDate = startDate;
+//		this.companyDto = companyDto;
+//	}
 
 	public long getId() {
 		return id;
@@ -67,7 +82,15 @@ public class EmployeeDto {
 	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
-	
+
+//	public CompanyDto getCompanyDto() {
+//		return companyDto;
+//	}
+//
+//	public void setCompanyDto(CompanyDto companyDto) {
+//		this.companyDto = companyDto;
+//	}
+
 	@Override
 	public String toString() {
 //		String str = "ID: " + this.id + ", name: " + this.name + ", positon: " + this.position + ", salary: " + this.salary

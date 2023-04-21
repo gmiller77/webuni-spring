@@ -2,7 +2,6 @@ package hu.webuni.hr.greg77.mapper;
 
 import java.util.List;
 
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,26 +12,30 @@ import hu.webuni.hr.greg77.dto.EmployeeDto;
 import hu.webuni.hr.greg77.model.Company;
 import hu.webuni.hr.greg77.model.Employee;
 
+//@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 @Mapper(componentModel = "spring")
 public interface CompanyMapper {
+
+	@Mapping(source = "employees", target = "employeeDtos")
+	CompanyDto companyToDto(Company company);
 	
-CompanyDto companyToDto(Company company);
-	
-	@Mapping(target = "employees", ignore = true)
+//	@InheritInverseConfiguration
+	@Mapping(source = "employeeDtos", target = "employees")
+	Company dtoToCompany(CompanyDto companyDto);
+
+	@Mapping(target = "employeeDtos", ignore = true)
 	@Named("summary")
 	CompanyDto companyToSummaryDto(Company company);
 	
-	Company dtoToCompany(CompanyDto companyDto);
-	
 	EmployeeDto employeeToDto(Employee employee);
 
-	@InheritInverseConfiguration
+	@Mapping(target = "company", ignore = true)
 	Employee dtoToEmployee(EmployeeDto employeeDto);
-	
+
 	List<Employee> dtosToEmployees(List<EmployeeDto> employeeDtos);
-	
+
 	List<CompanyDto> companiesToDtos(List<Company> companies);
-	
+
 	@IterableMapping(qualifiedByName = "summary")
 	List<CompanyDto> companiesToSummaryDtos(List<Company> companies);
 }

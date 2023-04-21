@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public class CompanyDto {
-	
+
 	@PositiveOrZero
 	private long id;
 	@NotEmpty
@@ -16,24 +16,32 @@ public class CompanyDto {
 	private String name;
 	@NotEmpty
 	private String address;
-	private List<EmployeeDto> employees = new ArrayList<>();
+//	private List<EmployeeDto> employeeDtos;
+	private List<EmployeeDto> employeeDtos = new ArrayList<>();
 
 	public CompanyDto() {
+//		super();
 	}
 
-	public CompanyDto(long id, String companyIdNumber, String name, String address) {
+	/*
+	public CompanyDto(@PositiveOrZero long id, @NotEmpty String companyIdNumber, @NotEmpty String name,
+			@NotEmpty String address) {
+		super();
 		this.id = id;
 		this.companyIdNumber = companyIdNumber;
 		this.name = name;
 		this.address = address;
 	}
+	*/
 
-	public CompanyDto(long id, String companyIdNumber, String name, String address, List<EmployeeDto> employees) {
+	public CompanyDto(@PositiveOrZero long id, @NotEmpty String companyIdNumber, @NotEmpty String name,
+			@NotEmpty String address, List<EmployeeDto> employeeDtos) {
+		super();
 		this.id = id;
 		this.companyIdNumber = companyIdNumber;
 		this.name = name;
 		this.address = address;
-		this.employees = employees;
+		this.employeeDtos = employeeDtos;
 	}
 
 	public long getId() {
@@ -68,12 +76,12 @@ public class CompanyDto {
 		this.address = address;
 	}
 
-	public List<EmployeeDto> getEmployees() {
-		return employees;
+	public List<EmployeeDto> getEmployeeDtos() {
+		return employeeDtos;
 	}
 
-	public void setEmployees(List<EmployeeDto> employees) {
-		this.employees = employees;
+	public void setEmployeeDtos(List<EmployeeDto> employeeDtos) {
+		this.employeeDtos = employeeDtos;
 	}
 
 }
