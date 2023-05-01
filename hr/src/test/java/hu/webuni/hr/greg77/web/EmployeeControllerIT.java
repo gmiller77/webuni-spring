@@ -26,7 +26,7 @@ public class EmployeeControllerIT {
 	void testThatCreatedEmployeeIsListed() throws Exception {
 		List<EmployeeDto> employeesBefore = getAllEmployees();
 
-		EmployeeDto newEmployeeDto = new EmployeeDto(10L, "Thomas Test", "test engineer", 12_345,
+		EmployeeDto newEmployeeDto = new EmployeeDto(10L, "Thomas Test", null, 12_345,
 				LocalDateTime.now().minusMonths(100));
 
 		createEmployee(newEmployeeDto);
@@ -47,7 +47,7 @@ public class EmployeeControllerIT {
 	void testThatNewInvalidEmployeeIsCreated() throws Exception {
 		List<EmployeeDto> employeesBefore = getAllEmployees();
 
-		EmployeeDto newInvalidEmployeeDto = new EmployeeDto(10L, "", "", 12_345,
+		EmployeeDto newInvalidEmployeeDto = new EmployeeDto(10L, "", null, 12_345,
 				LocalDateTime.now().minusMonths(100));
 
 		createInvalidEmployee(newInvalidEmployeeDto);
@@ -69,7 +69,7 @@ public class EmployeeControllerIT {
 	void testThatModifiedEmployeeHasUpdatedData() throws Exception {
 		List<EmployeeDto> employeesBefore = getAllEmployees();
 
-		EmployeeDto newEmployeeDto = new EmployeeDto(1L, "Thomas Test", "test engineer", 12_345,
+		EmployeeDto newEmployeeDto = new EmployeeDto(1L, "Thomas Test", null, 12_345,
 				LocalDateTime.now().minusMonths(100));
 
 		updateEmployee(newEmployeeDto);
@@ -101,7 +101,7 @@ public class EmployeeControllerIT {
 	void testThatModifiedInvalidEmployeeHasUpdatedData() throws Exception {
 		List<EmployeeDto> employeesBefore = getAllEmployees();
 
-		EmployeeDto newInvalidEmployeeDto = new EmployeeDto(1L, "", "", 12_345,
+		EmployeeDto newInvalidEmployeeDto = new EmployeeDto(1L, "", null, 12_345,
 				LocalDateTime.now().minusMonths(100));
 
 		updateInvalidEmployee(newInvalidEmployeeDto);

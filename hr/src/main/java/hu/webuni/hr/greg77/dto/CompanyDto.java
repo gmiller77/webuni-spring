@@ -16,11 +16,9 @@ public class CompanyDto {
 	private String name;
 	@NotEmpty
 	private String address;
-//	private List<EmployeeDto> employeeDtos;
 	private List<EmployeeDto> employeeDtos = new ArrayList<>();
 
 	public CompanyDto() {
-//		super();
 	}
 
 	/*

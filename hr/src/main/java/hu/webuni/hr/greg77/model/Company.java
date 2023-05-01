@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -23,6 +24,21 @@ public class Company {
 	private List<Employee> employees;
 //	private List<Employee> employees = new ArrayList<>();
 	
+	@ManyToOne
+	private CompanyType companyType;
+	
+	/*
+	public Company(Long id, String companyIdNumber, String name, String address, List<Employee> employees,
+			CompanyType companyType) {
+		this.id = id;
+		this.companyIdNumber = companyIdNumber;
+		this.name = name;
+		this.address = address;
+		this.employees = employees;
+		this.companyType = companyType;
+	}
+	*/
+
 	public Company() {
 	}
 
@@ -44,7 +60,6 @@ public class Company {
 	}
 
 	public Company(String companyIdNumber, String name, String address, List<Employee> employees) {
-		super();
 		this.companyIdNumber = companyIdNumber;
 		this.name = name;
 		this.address = address;
@@ -87,6 +102,18 @@ public class Company {
 		return employees;
 	}
 	
+	public CompanyType getCompanyType() {
+		return companyType;
+	}
+
+	public void setCompanyType(CompanyType companyType) {
+		this.companyType = companyType;
+	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+	}
+
 	public void addEmployee(Employee employee) {
 		if(this.employees == null)
 			this.employees = new ArrayList<>();

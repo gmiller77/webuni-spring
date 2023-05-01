@@ -1,6 +1,5 @@
 package hu.webuni.hr.greg77.web;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +17,14 @@ public class EmployeeTLController {
 	private List<EmployeeDto> thymeEmployees = new ArrayList<>();
 
 	{
+		/*
 		thymeEmployees.add(new EmployeeDto(1, "Anna Smith", "chief", 1000, LocalDateTime.now().minusMonths(130)));
 		thymeEmployees.add(new EmployeeDto(2, "Bob Tailor", "assistant", 1000, LocalDateTime.now().minusMonths(119)));
 		thymeEmployees
 				.add(new EmployeeDto(3, "Charles Adams", "section head", 1000, LocalDateTime.now().minusMonths(74)));
 		thymeEmployees.add(new EmployeeDto(4, "Diane Kerrigan", "adjutant", 1000, LocalDateTime.now().minusMonths(55)));
 		thymeEmployees.add(new EmployeeDto(5, "Eric Tesla", "technician", 1000, LocalDateTime.now().minusMonths(28)));
+		*/
 	}
 
 	@GetMapping("/")

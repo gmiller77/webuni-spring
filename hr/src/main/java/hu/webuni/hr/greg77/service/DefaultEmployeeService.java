@@ -9,16 +9,6 @@ import hu.webuni.hr.greg77.model.Employee;
 @Service
 public class DefaultEmployeeService extends AbstractEmployeeService{
 
-	/*
-	public DefaultEmployeeService(EmployeeRepository employeeRepository) {
-		super(employeeRepository);
-	}
-
-	public DefaultEmployeeService() {
-		// TODO Auto-generated constructor stub
-	}
-	*/
-
 	@Autowired
 	HrConfigProperties config;
 

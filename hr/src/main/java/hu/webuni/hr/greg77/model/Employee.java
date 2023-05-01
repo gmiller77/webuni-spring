@@ -3,10 +3,8 @@ package hu.webuni.hr.greg77.model;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -16,20 +14,24 @@ public class Employee {
 	@GeneratedValue
 	private Long id;
 	private String name;
-	private String position;
+//	private String position;
+	
+	@ManyToOne
+	private Position position;
+	
 	private int salary;
 	private LocalDateTime startDate;
 
 //	@ManyToOne(fetch = FetchType.LAZY)
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "company_id", nullable = false)
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "company_id", nullable = false)
+	@ManyToOne
 	private Company company;
 	
 	public Employee() {
-		super();
 	}
 
-	public Employee(Long id, String name, String position, int salary, LocalDateTime startDate) {
+	public Employee(Long id, String name, Position position, int salary, LocalDateTime startDate) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -38,7 +40,7 @@ public class Employee {
 		this.startDate = startDate;
 	}
 
-	public Employee(String name, String position, int salary, LocalDateTime startDate) {
+	public Employee(String name, Position position, int salary, LocalDateTime startDate) {
 		super();
 		this.name = name;
 		this.position = position;
@@ -62,11 +64,11 @@ public class Employee {
 		this.name = name;
 	}
 
-	public String getPosition() {
+	public Position getPosition() {
 		return position;
 	}
 
-	public void setPosition(String position) {
+	public void setPosition(Position position) {
 		this.position = position;
 	}
 

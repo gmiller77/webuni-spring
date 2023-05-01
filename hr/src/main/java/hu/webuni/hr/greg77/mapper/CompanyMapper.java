@@ -2,6 +2,7 @@ package hu.webuni.hr.greg77.mapper;
 
 import java.util.List;
 
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,16 +20,19 @@ public interface CompanyMapper {
 	@Mapping(source = "employees", target = "employeeDtos")
 	CompanyDto companyToDto(Company company);
 	
-//	@InheritInverseConfiguration
 	@Mapping(source = "employeeDtos", target = "employees")
+	@Mapping(target = "companyType", ignore = true)
 	Company dtoToCompany(CompanyDto companyDto);
 
 	@Mapping(target = "employeeDtos", ignore = true)
 	@Named("summary")
 	CompanyDto companyToSummaryDto(Company company);
 	
+	@Mapping(source = "position.name", target = "position")
+	@Mapping(target = "companyDto", ignore = true)
 	EmployeeDto employeeToDto(Employee employee);
 
+	@InheritInverseConfiguration
 	@Mapping(target = "company", ignore = true)
 	Employee dtoToEmployee(EmployeeDto employeeDto);
 

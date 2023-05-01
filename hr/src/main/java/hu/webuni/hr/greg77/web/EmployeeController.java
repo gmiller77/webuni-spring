@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +23,6 @@ import org.springframework.web.server.ResponseStatusException;
 import hu.webuni.hr.greg77.dto.EmployeeDto;
 import hu.webuni.hr.greg77.mapper.EmployeeMapper;
 import hu.webuni.hr.greg77.model.Employee;
-import hu.webuni.hr.greg77.repository.EmployeeRepository;
 import hu.webuni.hr.greg77.service.EmployeeService;
 import jakarta.validation.Valid;
 
@@ -35,41 +36,35 @@ public class EmployeeController {
 	@Autowired
 	EmployeeMapper employeeMapper;
 
+	/*
 	@Autowired
 	EmployeeRepository employeeRepository;
+	*/
 
 	@GetMapping
-	public List<EmployeeDto> getAll(@RequestParam(required = false) Integer minSalary) {
+	public List<EmployeeDto> getAll(@RequestParam(required = false) Integer minSalary, Pageable pageable){
 		List<Employee> employees = null;
-		if (minSalary == null) {
+		if(minSalary == null) {
 			employees = employeeService.findAll();
 		} else {
-			employees = employeeRepository.findBySalaryGreaterThanEqual(minSalary);
-		}
-		if (employees != null) {
-			for (Employee employee : employees) {
-				employee.setCompany(null);
-			}
+			Page<Employee> pageOfEmployees = employeeService.findBySalaryGreaterThanEqual(minSalary, pageable);
+//			Page<Employee> pageOfEmployees = new PageImpl<>(employeeService.findBySalaryGreaterThanEqual(minSalary, pageable));
+//			Page<Employee> pageOfEmployees = (Page<Employee>) employeeService.findBySalaryGreaterThanEqual(minSalary);
+			System.out.println(pageOfEmployees.getTotalElements());
+			System.out.println(pageOfEmployees.isFirst());
+			System.out.println(pageOfEmployees.isLast());
+			System.out.println(pageOfEmployees.hasNext());
+			System.out.println(pageOfEmployees.hasPrevious());
+			employees = pageOfEmployees.getContent();
 		}
 		return employeeMapper.employeesToDtos(employees);
 	}
-	/*
-	 * @GetMapping public List<EmployeeDto> getAll() { return new
-	 * ArrayList<>(employeeMapper.employeesToDtos(employeeService.findAll())); }
-	 */
 
 	@GetMapping("/{id}")
 	public EmployeeDto getById(@PathVariable long id) {
 		Employee employee = findByIdOrThrow(id);
 		return employeeMapper.employeeToDto(employee);
 	}
-	/*
-	 * @GetMapping("/{id}") public EmployeeDto getById(@PathVariable long id) {
-	 * Employee employee = employeeService.findById(id) .orElseThrow(() -> new
-	 * ResponseStatusException(HttpStatus.NOT_FOUND));
-	 * 
-	 * return employeeMapper.employeeToDto(employee); }
-	 */
 
 	private Employee findByIdOrThrow(long id) {
 		return employeeService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -96,46 +91,30 @@ public class EmployeeController {
 		} else {
 			return ResponseEntity.ok(employeeMapper.employeeToDto(updatedEmployee));
 		}
-
 	}
-	/*
-	 * @PutMapping("/{id}") public ResponseEntity<EmployeeDto>
-	 * modifyEmployee(@PathVariable long id, @RequestBody @Valid EmployeeDto
-	 * employeeDto) { Employee employee = employeeMapper.dtoToEmployee(employeeDto);
-	 * employee.setId(id); try { EmployeeDto savedEmployeeDto =
-	 * employeeMapper.employeeToDto(employeeService.update(employee)); return
-	 * ResponseEntity.ok(savedEmployeeDto); }catch (NoSuchElementException e) {
-	 * throw new ResponseStatusException(HttpStatus.NOT_FOUND); } }
-	 */
 
 	@DeleteMapping("/{id}")
 	public void deleteEmployee(@PathVariable long id) {
 		employeeService.delete(id);
 	}
 
-	/*
-	 * @DeleteMapping("/{id}") public void deleteEmployee(@PathVariable long id) {
-	 * employeeService.delete(id); }
-	 */
-
 	// @PathVariable megoldás - ez működött, ez lett elfogadva
 	@GetMapping("/salaryFilter/{query}")
 	public List<EmployeeDto> getAllEmployeeSalaryGreaterThan(@PathVariable int query) {
-		return employeeMapper.employeesToDtos(employeeService.findBySalaryGreaterThanEqual(query));
-		/*
-		 * return employeeMapper.employeesToDtos( employeeService.findAll() .stream()
-		 * .filter(e -> e.getSalary() >= query) .collect(Collectors.toList()) );
-		 */
+		return employeeMapper.employeesToDtos(employeeService.findBySalaryGreaterThanEqualX(query));
+		
+//		return employeeMapper.employeesToDtos( employeeService.findAll() .stream()
+//		.filter(e -> e.getSalary() >= query) .collect(Collectors.toList()) );
+		
 	}
 
 	// @RequestParam-os megoldás
 	@GetMapping("/FilterBySalary")
 	public List<EmployeeDto> getAllEmployeeSalaryGreaterThan2(@RequestParam("salaryMin") int limit) {
-		return employeeMapper.employeesToDtos(employeeService.findBySalaryGreaterThanEqual(limit));
-		/*
-		 * return employeeMapper.employeesToDtos( employeeService.findAll() .stream()
-		 * .filter(e -> e.getSalary() >= limit) .collect(Collectors.toList()) );
-		 */
+		return employeeMapper.employeesToDtos(employeeService.findBySalaryGreaterThanEqualX(limit));
+		
+//		return employeeMapper.employeesToDtos( employeeService.findAll() .stream()
+//		.filter(e -> e.getSalary() >= limit) .collect(Collectors.toList()) );
 	}
 
 //	@GetMapping("/position")	

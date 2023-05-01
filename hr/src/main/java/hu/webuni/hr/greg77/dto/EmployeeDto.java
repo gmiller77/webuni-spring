@@ -16,10 +16,9 @@ public class EmployeeDto {
 	private int salary;
 	@Past
 	private LocalDateTime startDate;
-//	private CompanyDto companyDto;
+	private CompanyDto companyDto;
 
 	public EmployeeDto() {
-		super();
 	}
 
 	public EmployeeDto(long id, @NotEmpty String name, @NotEmpty String position, @Positive int salary,
@@ -90,6 +89,14 @@ public class EmployeeDto {
 //	public void setCompanyDto(CompanyDto companyDto) {
 //		this.companyDto = companyDto;
 //	}
+
+	public CompanyDto getCompanyDto() {
+		return companyDto;
+	}
+
+	public void setCompanyDto(CompanyDto companyDto) {
+		this.companyDto = companyDto;
+	}
 
 	@Override
 	public String toString() {

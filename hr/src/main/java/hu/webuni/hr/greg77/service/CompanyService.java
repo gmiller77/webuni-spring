@@ -5,11 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import hu.webuni.hr.greg77.model.Company;
 import hu.webuni.hr.greg77.model.Employee;
 import hu.webuni.hr.greg77.repository.CompanyRepository;
 import hu.webuni.hr.greg77.repository.EmployeeRepository;
+import hu.webuni.hr.greg77.repository.PositionDetailsByCompanyRepository;
 
 @Service
 public class CompanyService {
@@ -31,6 +33,9 @@ public class CompanyService {
 	
 	@Autowired
 	private EmployeeRepository employeeRepository;
+	
+	@Autowired
+	private PositionDetailsByCompanyRepository positionDetailsByCompanyRepository;
 	
 	public Company save(Company company) {
 		if(company.getId() != null && company.getId() != 0L)
@@ -101,20 +106,22 @@ public class CompanyService {
 		return company;
 	}
 	
-	/*
-	private void checkUniqueCompanyIdNumber(String companyIdNumber) {
-		Optional<Company> companyWithSameIdNumber = companies.values().stream().filter(a -> a.getCompanyIdNumber().equals(companyIdNumber))
-				.findAny();
-		if (companyWithSameIdNumber.isPresent())
-			throw new NonUniqueCompanyIdNumberException(companyIdNumber);
+	@Transactional
+	public void setMinSalary(String positionName, long companyId, int minSalary) {
+		positionDetailsByCompanyRepository.findByPositionNameAndCompanyId(positionName, companyId)
+		.forEach(pd -> {
+			pd.setMinSalary(minSalary);
+			//1. megoldás: nem hatékony, mert minden employee-t betölt, és amiket módosítok egyesével UPDATE-eli SQL szinten
+//			pd.getCompany().getEmployees().forEach( e-> {
+//				if(e.getPosition().getName().equals(positionName)
+//						&& e.getSalary() < minSalary) {
+//					e.setSalary(minSalary);
+//					//employeeRepository.save(e); --> nem szükséges a @Transactional miatt
+//				}				
+//			});
+			//2. megoldás
+			employeeRepository.updateSalaries(positionName, minSalary, companyId);
+		});
 	}
 	
-	private Company getCompanyOrThrow(long id) {
-		Company company = companies.get(id);
-		if(company == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);					
-		}
-		return company;
-	}
-	*/
 }

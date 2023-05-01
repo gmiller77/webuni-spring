@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import hu.webuni.hr.greg77.model.Employee;
 
 public interface EmployeeService {
@@ -20,7 +23,9 @@ public interface EmployeeService {
 	
 	public void delete(long id);
 	
-	List<Employee> findBySalaryGreaterThanEqual(int minSalary);
+	Page<Employee> findBySalaryGreaterThanEqual(Integer minSalary, Pageable pageable);
+
+	List<Employee> findBySalaryGreaterThanEqualX(Integer minSalary);
 	
 	List<Employee> findByPosition(String position);
 	
