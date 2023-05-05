@@ -19,11 +19,18 @@ public class HrApplication implements CommandLineRunner {
 	List<Employee> employees = new ArrayList<>();
 
 	{
+		/*
 		employees.add(new Employee(1L, "Anna Smith", null, 1000, LocalDateTime.now().minusMonths(130)));
 		employees.add(new Employee(2L, "Bob Tailor", null, 1000, LocalDateTime.now().minusMonths(119)));
 		employees.add(new Employee(3L, "Charles Adams", null, 1000, LocalDateTime.now().minusMonths(74)));
 		employees.add(new Employee(4L, "Diane Kerrigan", null, 1000, LocalDateTime.now().minusMonths(55)));
 		employees.add(new Employee(5L, "Eric Tesla", null, 1000, LocalDateTime.now().minusMonths(28)));
+		*/
+		employees.add(new Employee("Anna Smith", null, 1000, LocalDateTime.now().minusMonths(130)));
+		employees.add(new Employee("Bob Tailor", null, 1000, LocalDateTime.now().minusMonths(119)));
+		employees.add(new Employee("Charles Adams", null, 1000, LocalDateTime.now().minusMonths(74)));
+		employees.add(new Employee("Diane Kerrigan", null, 1000, LocalDateTime.now().minusMonths(55)));
+		employees.add(new Employee("Eric Tesla", null, 1000, LocalDateTime.now().minusMonths(28)));
 	}
 
 	@Autowired

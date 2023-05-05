@@ -19,6 +19,7 @@ public class Company {
 	private String name;
 	private String address;
 
+//	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
 //	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
 	@OneToMany(mappedBy = "company")
 	private List<Employee> employees;
@@ -27,30 +28,10 @@ public class Company {
 	@ManyToOne
 	private CompanyType companyType;
 	
-	/*
-	public Company(Long id, String companyIdNumber, String name, String address, List<Employee> employees,
-			CompanyType companyType) {
-		this.id = id;
-		this.companyIdNumber = companyIdNumber;
-		this.name = name;
-		this.address = address;
-		this.employees = employees;
-		this.companyType = companyType;
-	}
-	*/
-
 	public Company() {
 	}
 
 	/*
-	public Company(Long id, String companyIdNumber, String name, String address) {
-		this.id = id;
-		this.companyIdNumber = companyIdNumber;
-		this.name = name;
-		this.address = address;
-	}
-	*/
-
 	public Company(Long id, String companyIdNumber, String name, String address, List<Employee> employees) {
 		this.id = id;
 		this.companyIdNumber = companyIdNumber;
@@ -58,6 +39,7 @@ public class Company {
 		this.address = address;
 		this.employees = employees;
 	}
+	*/
 
 	public Company(String companyIdNumber, String name, String address, List<Employee> employees) {
 		this.companyIdNumber = companyIdNumber;

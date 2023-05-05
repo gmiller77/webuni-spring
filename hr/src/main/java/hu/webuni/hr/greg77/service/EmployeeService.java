@@ -32,5 +32,6 @@ public interface EmployeeService {
 	List<Employee> findByNameStartsWith(String nameStartsWith);
 	
 	List<Employee> findByStartDateBetweenDates(LocalDateTime dateStart, LocalDateTime dateEnd);
+
 }
  

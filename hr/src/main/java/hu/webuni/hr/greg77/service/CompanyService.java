@@ -5,9 +5,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
+import hu.webuni.hr.greg77.model.AverageSalaryByPosition;
 import hu.webuni.hr.greg77.model.Company;
 import hu.webuni.hr.greg77.model.Employee;
 import hu.webuni.hr.greg77.repository.CompanyRepository;
@@ -17,18 +20,6 @@ import hu.webuni.hr.greg77.repository.PositionDetailsByCompanyRepository;
 @Service
 public class CompanyService {
 
-	
-	/*
-	private Map<Long, Company> companies = new HashMap<>();
-
-	{
-		companies.put(1L, new Company(1L, "11-11-111111", "Alma Kft.", "1234 Budapest"));
-		companies.put(2L, new Company(2L, "22-22-222222", "Béta Kft.", "2345 Futapest"));
-		companies.put(3L, new Company(3L, "33-33-333333", "Cirokseprű Kft.", "3456 Cegléd"));
-		companies.put(4L, new Company(4L, "44-44-444444", "Dalmata Kft.", "4567 Dinnyés"));
-	}
-	*/
-	
 	@Autowired
 	private CompanyRepository companyRepository;
 	
@@ -74,7 +65,16 @@ public class CompanyService {
 	}
 	*/
 	
+	@Transactional
 	public void delete(long id) {
+//		EmployeeService.updateCompanyVariableToNull(id);
+		
+		Company company = companyRepository.findById(id)
+                .orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        for (Employee employee : company.getEmployees()) {
+            employee.setCompany(null);
+        }
 		companyRepository.deleteById(id);
 	}
 	
@@ -126,4 +126,16 @@ public class CompanyService {
 		});
 	}
 	
+	public List<Company> findCompaniesWithEmployeeCountHigherThan(int aboveEmployeeCount) {
+		return companyRepository.findCompaniesWithEmployeeCountHigherThan(aboveEmployeeCount);
+	}
+
+	public List<Company> findCompaniesWithHighSalaryEmployees(int aboveSalary) {
+		return companyRepository.findCompaniesWithHighSalaryEmployees(aboveSalary);
+	}
+	
+	public List<AverageSalaryByPosition> findAverageSalariesByPosition(long id) {
+		return companyRepository.findAverageSalariesByPosition(id);
+	}
+
 }

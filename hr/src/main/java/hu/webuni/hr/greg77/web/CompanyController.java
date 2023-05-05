@@ -21,7 +21,6 @@ import hu.webuni.hr.greg77.dto.EmployeeDto;
 import hu.webuni.hr.greg77.mapper.CompanyMapper;
 import hu.webuni.hr.greg77.model.AverageSalaryByPosition;
 import hu.webuni.hr.greg77.model.Company;
-import hu.webuni.hr.greg77.repository.CompanyRepository;
 import hu.webuni.hr.greg77.service.CompanyService;
 
 @RestController
@@ -34,8 +33,8 @@ public class CompanyController {
 	@Autowired
 	CompanyMapper companyMapper;
 	
-	@Autowired
-	CompanyRepository companyRepository;
+//	@Autowired
+//	CompanyRepository companyRepository;
 
 	@GetMapping
 	public List<CompanyDto> getAll(@RequestParam Optional<Boolean> full) {
@@ -105,20 +104,20 @@ public class CompanyController {
 	@GetMapping(params = "aboveSalary")
 	public List<CompanyDto> getCompaniesAboveSalary(@RequestParam int aboveSalary,
 			@RequestParam Optional<Boolean> full) {
-		List<Company> filteredCompanies = companyRepository.findCompaniesWithHighSalaryEmployees(aboveSalary);
+		List<Company> filteredCompanies = companyService.findCompaniesWithHighSalaryEmployees(aboveSalary);
 		return mapCompanies(filteredCompanies, full);
 	}
 
 	@GetMapping(params = "aboveEmployeeCount")
 	public List<CompanyDto> getCompaniesAboveEmployeeCount(@RequestParam int aboveEmployeeCount,
 			@RequestParam Optional<Boolean> full) {
-		List<Company> filteredCompanies = companyRepository.findCompaniesWithEmployeeCountHigherThan(aboveEmployeeCount);
+		List<Company> filteredCompanies = companyService.findCompaniesWithEmployeeCountHigherThan(aboveEmployeeCount);
 		return mapCompanies(filteredCompanies, full);
 	}
 
 	@GetMapping("/{id}/salaryStats")
 	public List<AverageSalaryByPosition> getSalaryStatsById(@PathVariable long id) {
-		return companyRepository.findAverageSalariesByPosition(id);
+		return companyService.findAverageSalariesByPosition(id);
 	}
 	
 
