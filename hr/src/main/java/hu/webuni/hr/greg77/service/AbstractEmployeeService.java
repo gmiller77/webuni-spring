@@ -49,6 +49,7 @@ public abstract class AbstractEmployeeService implements EmployeeService {
 	}
 
 	@Override
+	@Transactional
 	public Employee update(Employee employee) {
 		if(!employeeRepository.existsById(employee.getId()))
 			return null;

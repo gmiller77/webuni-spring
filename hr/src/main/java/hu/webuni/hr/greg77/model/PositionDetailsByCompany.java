@@ -19,6 +19,17 @@ public class PositionDetailsByCompany {
 	@ManyToOne
 	private Position position;
 
+	public PositionDetailsByCompany() {
+	}
+
+	
+	public PositionDetailsByCompany(int minSalary, Company company, Position position) {
+		this.minSalary = minSalary;
+		this.company = company;
+		this.position = position;
+	}
+
+	
 	public long getId() {
 		return id;
 	}

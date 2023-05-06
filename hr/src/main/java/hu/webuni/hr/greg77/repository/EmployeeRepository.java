@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import hu.webuni.hr.greg77.model.Employee;
@@ -22,6 +23,14 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	
 	Page<Employee> findBySalaryGreaterThanEqual(Integer minSalary, Pageable pageable);
 
+//	@Transactional //elhagyható, ha a service rétegre bízzuk a tranzakció indítását 
+	@Modifying
+	//1. megoldás: UPDATE + JOIN nem támogatott együtt
+//	@Query("UPDATE Employee e "
+//			+ "SET e.salary = :minSalary "
+//			+ "WHERE e.position.name=:position "
+//			+ "AND e.salary < :minSalary "
+//			+ "AND e.company.id=:companyId")
 	@Query("UPDATE Employee e "
 			+ "SET e.salary = :minSalary "
 			+ "WHERE e.id IN "
