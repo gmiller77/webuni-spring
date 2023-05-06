@@ -27,7 +27,7 @@ public interface EmployeeService {
 
 	List<Employee> findBySalaryGreaterThanEqualX(Integer minSalary);
 	
-	List<Employee> findByPosition(String position);
+//	List<Employee> findByPosition(String position);
 	
 	List<Employee> findByNameStartsWith(String nameStartsWith);
 	

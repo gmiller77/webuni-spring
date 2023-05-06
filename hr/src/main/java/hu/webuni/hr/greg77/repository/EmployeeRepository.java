@@ -12,7 +12,7 @@ import hu.webuni.hr.greg77.model.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-	List<Employee> findByPosition(String position);
+//	List<Employee> findByPosition(String position);
 
 	List<Employee> findByNameStartingWithIgnoreCase(String nameStartsWith);
 

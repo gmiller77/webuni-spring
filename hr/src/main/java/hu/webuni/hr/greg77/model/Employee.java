@@ -17,8 +17,8 @@ public class Employee {
 	private String name;
 //	private String position;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-//	@ManyToOne
+//	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Position position;
 	
 	private int salary;

@@ -87,7 +87,8 @@ public class EmployeeController {
 		employeeDto.setId(id);
 		Employee updatedEmployee = employeeService.update(employeeMapper.dtoToEmployee(employeeDto));
 		if (updatedEmployee == null) {
-			return ResponseEntity.notFound().build();
+//			return ResponseEntity.notFound().build();
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		} else {
 			return ResponseEntity.ok(employeeMapper.employeeToDto(updatedEmployee));
 		}
@@ -117,11 +118,13 @@ public class EmployeeController {
 //		.filter(e -> e.getSalary() >= limit) .collect(Collectors.toList()) );
 	}
 
+	/*
 //	@GetMapping("/position")	
 	@GetMapping(value = "/search", params = "position")
 	public List<EmployeeDto> getAllEmployeesByPosition(@RequestParam String position) {
 		return new ArrayList<>(employeeMapper.employeesToDtos(employeeService.findByPosition(position)));
 	}
+	*/
 
 //	@GetMapping("/name")	
 	@GetMapping(value = "/search", params = "nameStartsWith")

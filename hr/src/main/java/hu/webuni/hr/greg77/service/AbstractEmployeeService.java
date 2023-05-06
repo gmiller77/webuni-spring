@@ -81,9 +81,11 @@ public abstract class AbstractEmployeeService implements EmployeeService {
 		return employeeRepository.findBySalaryGreaterThanEqual(minSalary, pageable);
 	}
 	
+	/*
 	public List<Employee> findByPosition(String pos) {
 		return employeeRepository.findByPosition(pos);
 	}
+	*/
 	
 	public List<Employee> findByNameStartsWith(String nameStartsWith) {
 		return employeeRepository.findByNameStartingWithIgnoreCase(nameStartsWith);
