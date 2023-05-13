@@ -1,7 +1,9 @@
 package hu.webuni.hr.greg77.repository;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -18,7 +20,15 @@ public interface CompanyRepository extends JpaRepository<Company, Long>{
 	public List<Company> findCompaniesWithHighSalaryEmployees(int limit);
 	*/
 	
-//	LIVE:
+	@EntityGraph(attributePaths = {"employees", "employees.position"})
+	@Query("SELECT c FROM Company c")
+	public List<Company> findAllWithEmployees();
+	
+	@EntityGraph(attributePaths = {"employees", "employees.position"})
+	@Query("SELECT c FROM Company c WHERE c.id=:id")
+	public Optional<Company> findByIdWithEmployees(Long id);
+	
+	
 	@Query("SELECT DISTINCT c FROM Company c JOIN c.employees e WHERE e.salary > :minSalary")
 	public List<Company> findCompaniesWithHighSalaryEmployees(int minSalary);
 
