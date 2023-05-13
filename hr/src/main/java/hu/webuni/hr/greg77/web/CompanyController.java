@@ -43,8 +43,17 @@ public class CompanyController {
 	@GetMapping
 	public List<CompanyDto> getAll(@RequestParam Optional<Boolean> full) {
 
+<<<<<<< Updated upstream
 		List<Company> companies = companyService.findAll();
 		if(full.orElse(false)) {
+=======
+		List<Company> companies = companyService.findAll(full);
+		return mapCompanies(companies, full);
+	}
+
+	private List<CompanyDto> mapCompanies(List<Company> companies, Optional<Boolean> full) {
+		if (full.orElse(false))
+>>>>>>> Stashed changes
 			return companyMapper.companiesToDtos(companies);
 		} else {
 			return companyMapper.companiesToSummaryDtos(companies);
@@ -82,9 +91,16 @@ public class CompanyController {
 
 	@GetMapping("/{id}")
 	public CompanyDto getById(@PathVariable long id, @RequestParam Optional<Boolean> full) {
+<<<<<<< Updated upstream
 		Company company = companyService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		
 		if(full.orElse(false)) {
+=======
+		Company company = companyService.findById(id, full)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+		if (full.orElse(false)) {
+>>>>>>> Stashed changes
 			return companyMapper.companyToDto(company);
 		} else {
 			return companyMapper.companyToSummaryDto(company);

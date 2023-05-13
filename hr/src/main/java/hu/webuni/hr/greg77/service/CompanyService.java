@@ -45,12 +45,18 @@ public class CompanyService {
 	}
 	*/
 	
-	public List<Company> findAll() {
-		return companyRepository.findAll();
+	public List<Company> findAll(Optional<Boolean> full) {
+		if (full.orElse(false)) 
+			return companyRepository.findAllWithEmployees();
+		 	else 
+			return companyRepository.findAll();
 	}
 	
-	public Optional<Company> findById(long id) {		
-		return companyRepository.findById(id);
+	public Optional<Company> findById(long id, Optional<Boolean> full) {		
+		if (full.orElse(false))
+			return companyRepository.findByIdWithEmployees(id);
+		else
+			return companyRepository.findById(id);
 	}
 	
 	public Company update(Company company) {
