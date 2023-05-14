@@ -85,6 +85,10 @@ public class CompanyController {
 	@PostMapping("/{id}/employees")
 	public CompanyDto addNewEmployee(@PathVariable long id, @RequestBody EmployeeDto employeeDto) {
 		Company company = companyService.addEmployee(id, companyMapper.dtoToEmployee(employeeDto));
+		
+//		itt dob egy 500-as hibát: message": "org.hibernate.TransientPropertyValueException: object
+//			references an unsaved transient instance - save the transient instance before flushing :
+//				hu.webuni.hr.greg77.model.Employee.position -> hu.webuni.hr.greg77.model.Position",
 		return companyMapper.companyToDto(company);
 	}
 

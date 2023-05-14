@@ -10,9 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import hu.webuni.hr.greg77.model.Employee;
-import hu.webuni.hr.greg77.model.Position;
 import hu.webuni.hr.greg77.repository.EmployeeRepository;
-import hu.webuni.hr.greg77.repository.PositionRepository;
 
 public abstract class AbstractEmployeeService implements EmployeeService {
 
@@ -20,33 +18,21 @@ public abstract class AbstractEmployeeService implements EmployeeService {
 	EmployeeRepository employeeRepository;
 	
 	@Autowired
-	private PositionRepository positionRepository;
+	PositionService positionService;
 	
 	@Override
 	@Transactional
 	public Employee save(Employee employee) {
 		if(employee.getId() != null && employee.getId() != 0L)
 			return null;
-		
-		clearCompanyAndSetPosition(employee);
+		positionService.setPosition(employee);
 		return employeeRepository.save(employee);
 	}
 
 	private void clearCompanyAndSetPosition(Employee employee) {
 		employee.setCompany(null);
-		String positionName = employee.getPosition().getName();
-		Position position = null;
-		if(positionName != null) {
-			List<Position> positions = positionRepository.findByName(positionName);
-			
-			if(positions.isEmpty()) {
-				position = positionRepository.save(new Position(positionName, null));
-			} else {
-				position = positions.get(0);
-			}
-			employee.setPosition(position);
-		}		
-	}
+		positionService.setPosition(employee);
+	}		
 
 	@Override
 	@Transactional
@@ -68,6 +54,7 @@ public abstract class AbstractEmployeeService implements EmployeeService {
 	}
 
 	@Override
+	@Transactional
 	public void delete(long id) {
 		employeeRepository.deleteById(id);
 	}

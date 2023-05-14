@@ -29,6 +29,10 @@ public class CompanyService {
 	@Autowired
 	private PositionDetailsByCompanyRepository positionDetailsByCompanyRepository;
 	
+	@Autowired
+	PositionService positionService;
+	
+	@Transactional
 	public Company save(Company company) {
 		if(company.getId() != null && company.getId() != 0L)
 			return null;
@@ -56,6 +60,7 @@ public class CompanyService {
 			return companyRepository.findById(id);
 	}
 	
+	@Transactional
 	public Company update(Company company) {
 		if(!companyRepository.existsById(company.getId()))
 			return null;
@@ -84,22 +89,27 @@ public class CompanyService {
 		companyRepository.deleteById(id);
 	}
 	
+	@Transactional
 	public Company addEmployee(long id, Employee employee) {
-		Company company = companyRepository.findById(id).get();
-		company.addEmployee(employee);
-		employeeRepository.save(employee);
+		Company company = companyRepository.findByIdWithEmployees(id).get();
+		positionService.setPosition(employee);
+		Employee employeeManaged = employeeRepository.save(employee);
+		company.addEmployee(employeeManaged);
 		return company;
 	}
 	
+	@Transactional
 	public Company deleteEmployee(long id, long employeeId) {
 		Company company = companyRepository.findById(id).get();
 		Employee employee = employeeRepository.findById(employeeId).get();
 		employee.setCompany(null);
 		company.getEmployees().remove(employee);
-		employeeRepository.save(employee);
+//		employeeRepository.save(employee);
+//		itt az az okosság, hogy a @Trans miatt felesleges ez a művelet
 		return company;
 	}
 	
+	@Transactional
 	public Company replaceEmployees(long id, List<Employee> employees) {
 		Company company = companyRepository.findById(id).get();
 		for(Employee emp: company.getEmployees()) {
@@ -107,8 +117,9 @@ public class CompanyService {
 		}
 		company.getEmployees().clear();
 		for(Employee emp: employees) {
-			company.addEmployee(emp);
-			employeeRepository.save(emp);
+			positionService.setPosition(emp);
+			Employee employeeManaged = employeeRepository.save(emp);
+			company.addEmployee(employeeManaged);
 		}
 		return company;
 	}

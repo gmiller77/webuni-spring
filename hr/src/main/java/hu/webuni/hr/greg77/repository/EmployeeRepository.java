@@ -2,6 +2,7 @@ package hu.webuni.hr.greg77.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,4 +42,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 			+ "AND e2.company.id=:companyId)")
 	public int updateSalaries(String position, int minSalary, long companyId);
 
+	Optional<Employee> findByUsername(String username);
 }
