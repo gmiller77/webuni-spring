@@ -44,50 +44,14 @@ public class InitDbService {
 	private List<Employee> initEmployees = new ArrayList<>();
 	private Map<String, Position> initPositions = new HashMap<>();
 	private List<PositionDetailsByCompany> initPositionDetailsByCompany = new ArrayList<>();
-	/*
-	{
-		initEmployees.add(new Employee ("Alma Anna", "főnök", 9000_000, LocalDateTime.now().minusMonths(140)));
-		initEmployees.add(new Employee ("Alma András", "kisfőnök", 750_000, LocalDateTime.now().minusMonths(100)));
-		initEmployees.add(new Employee ("Alma Anett", "HR munkatárs", 450_000, LocalDateTime.now().minusMonths(80)));
-		initEmployees.add(new Employee ("Alma Aladár", "jó munkásember", 620_000, LocalDateTime.now().minusMonths(20)));
-		initEmployees.add(new Employee ("Alma Eperke", "gyakornok", 340_000, LocalDateTime.now().minusMonths(70)));
-		initCompanies.add(new Company ("11-11-111111", "Alma Kft.", "1234 Budapest",List.copyOf(initEmployees)));
-		initEmployees.clear();
-		
-		initEmployees.add(new Employee ("Buborék Anna", "főnök", 1_100_000, LocalDateTime.now().minusMonths(60)));
-		initEmployees.add(new Employee ("Buborék András", "kisfőnök", 810_000, LocalDateTime.now().minusMonths(40)));
-		initEmployees.add(new Employee ("Buborék Anett", "HR munkatárs", 510_000, LocalDateTime.now().minusMonths(20)));
-		initEmployees.add(new Employee ("Buborék Aladár", "jó munkásember", 660_000, LocalDateTime.now().minusMonths(10)));
-		initEmployees.add(new Employee ("Buborék Eperke", "gyakornok", 355_000, LocalDateTime.now().minusMonths(40)));
-		initCompanies.add(new Company ("22-22-222222", "Buborék Kft.", "2345 Budapest",List.copyOf(initEmployees)));
-		initEmployees.clear();
-				
-		initEmployees.add(new Employee ("Cérna Anna", "főnök", 1_200_000, LocalDateTime.now().minusMonths(20)));
-		initEmployees.add(new Employee ("Cérna András", "kisfőnök", 900_000, LocalDateTime.now().minusMonths(30)));
-		initEmployees.add(new Employee ("Cérna Anett", "HR munkatárs", 650_000, LocalDateTime.now().minusMonths(40)));
-		initEmployees.add(new Employee ("Cérna Aladár", "jó munkásember", 750_000, LocalDateTime.now().minusMonths(50)));
-		initEmployees.add(new Employee ("Cérna Eperke", "gyakornok", 400_000, LocalDateTime.now().minusMonths(25)));
-		initCompanies.add(new Company ("33-33-333333", "Cérna Kft.", "3456 Budapest",List.copyOf(initEmployees)));
-		initEmployees.clear();
-	}
-	*/
 	
 	{
-		/*
-		Position fonok = positionRepository.save(new Position("főnök", Qualification.UNIVERSITY));
-		Position kisfonok = positionRepository.save(new Position("kisfőnök", Qualification.UNIVERSITY));
-		Position hr = positionRepository.save(new Position("HR munkatárs", Qualification.COLLEGE));
-		Position jomunkas = positionRepository.save(new Position("jó munkásember", Qualification.HIGH_SCHOOL));
-		Position gyakornok = positionRepository.save(new Position("gyakornok", Qualification.COLLEGE));
-		*/
-		
 		/*
 		initPositions.put("fonok", new Position("főnök", Qualification.UNIVERSITY));
 		initPositions.put("kisfonok", new Position("kisfőnök", Qualification.UNIVERSITY));
 		initPositions.put("hr", new Position("HR munkatárs", Qualification.COLLEGE));
 		initPositions.put("jomunkas", new Position("jó munkásember", Qualification.HIGH_SCHOOL));
 		initPositions.put("gyakornok", new Position("gyakornok", Qualification.COLLEGE));
-		
 		
 //		ez a 3 employee lesz ellátva username / password-del:
 		
@@ -164,7 +128,6 @@ public class InitDbService {
 
 	@Transactional
 	public void insertTestData() {
-		
 		initPositions.put("fonok", new Position("főnök", Qualification.UNIVERSITY));
 		initPositions.put("kisfonok", new Position("kisfőnök", Qualification.UNIVERSITY));
 		initPositions.put("hr", new Position("HR munkatárs", Qualification.COLLEGE));
@@ -172,17 +135,17 @@ public class InitDbService {
 		initPositions.put("gyakornok", new Position("gyakornok", Qualification.COLLEGE));
 		
 //		ez a 3 employee lesz ellátva username / password-del:
-		/* 1 */
+//		1.
 		Employee empWithPwd_1 = new Employee ("Alma Anna", initPositions.get("fonok"), 900_000, LocalDateTime.now().minusMonths(140));
 		empWithPwd_1.setUsername("user1");
 		empWithPwd_1.setPassword(passwordEncoder.encode("pass1"));
 		initEmployees.add(empWithPwd_1);
-		/* 2 */
+//		2.
 		Employee empWithPwd_2 = new Employee ("Alma András", initPositions.get("kisfonok"), 750_000, LocalDateTime.now().minusMonths(100));
 		empWithPwd_2.setUsername("user2");
 		empWithPwd_2.setPassword(passwordEncoder.encode("pass2"));
 		initEmployees.add(empWithPwd_2);
-		/* 3 */
+//		3.
 		Employee empWithPwd_3 = new Employee ("Alma Anett", initPositions.get("hr"), 450_000, LocalDateTime.now().minusMonths(80));
 		empWithPwd_3.setUsername("user3");
 		empWithPwd_3.setPassword(passwordEncoder.encode("pass3"));
@@ -233,8 +196,6 @@ public class InitDbService {
 		initPositionDetailsByCompany.add(new PositionDetailsByCompany (300_000, company3, initPositions.get("gyakornok")));
 		
 		initEmployees.clear();
-		
-		
 		
 		for(Position position : initPositions.values()){
 		    positionRepository.save(position);

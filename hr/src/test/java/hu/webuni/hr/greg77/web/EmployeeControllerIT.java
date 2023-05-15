@@ -9,24 +9,48 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.assertj.core.data.TemporalUnitWithinOffset;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
 
 import hu.webuni.hr.greg77.dto.EmployeeDto;
+import hu.webuni.hr.greg77.model.Employee;
+import hu.webuni.hr.greg77.repository.EmployeeRepository;
 
 @AutoConfigureTestDatabase
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class EmployeeControllerIT {
 
 	private static final String BASE_URI = "/api/employees";
+	
+	private static final String PASS = "pass";
+
+	private static final String TESTUSER = "testuser";
 
 	@Autowired
 	WebTestClient webTestClient;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	EmployeeRepository employeeRepository;
+	
+	@BeforeEach
+	public void init() {
+		if(employeeRepository.findByUsername(TESTUSER).isEmpty()) {
+			Employee employee = new Employee();
+			employee.setUsername(TESTUSER);
+			employee.setPassword(passwordEncoder.encode(PASS));
+			employeeRepository.save(employee);
+		}
+	}
 
 	@Test
 	void testThatCreatedEmployeeIsListed() throws Exception {
@@ -155,6 +179,7 @@ public class EmployeeControllerIT {
 		webTestClient
 			.post()
 			.uri(BASE_URI)
+			.headers(headers -> headers.setBasicAuth(TESTUSER, PASS))
 			.bodyValue(newEmployeeDto)
 			.exchange()
 			.expectStatus()
@@ -166,6 +191,7 @@ public class EmployeeControllerIT {
 		webTestClient
 			.put()
 			.uri(BASE_URI + "/" + newEmployeeDto.getId())
+			.headers(headers -> headers.setBasicAuth(TESTUSER, PASS))
 			.bodyValue(newEmployeeDto)
 			.exchange()
 			.expectStatus()
@@ -176,6 +202,7 @@ public class EmployeeControllerIT {
 		webTestClient
 			.put()
 			.uri(BASE_URI + "/" + newEmployeeDto.getId())
+			.headers(headers -> headers.setBasicAuth(TESTUSER, PASS))
 			.bodyValue(newEmployeeDto)
 			.exchange()
 			.expectStatus()
@@ -186,6 +213,7 @@ public class EmployeeControllerIT {
 		webTestClient
 			.put()
 			.uri(BASE_URI + "/" + newEmployeeDto.getId())
+			.headers(headers -> headers.setBasicAuth(TESTUSER, PASS))
 			.bodyValue(newEmployeeDto)
 			.exchange()
 			.expectStatus()
@@ -196,6 +224,7 @@ public class EmployeeControllerIT {
 		return webTestClient
 				.post()
 				.uri(BASE_URI)
+				.headers(headers -> headers.setBasicAuth(TESTUSER, PASS))
 				.bodyValue(newEmployee)
 				.exchange();
 	}
@@ -204,6 +233,7 @@ public class EmployeeControllerIT {
 		List<EmployeeDto> responseList = webTestClient
 				.get()
 				.uri(BASE_URI)
+				.headers(headers -> headers.setBasicAuth(TESTUSER, PASS))
 				.exchange()
 				.expectStatus()
 				.isOk()
