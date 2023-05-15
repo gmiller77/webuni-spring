@@ -41,7 +41,6 @@ public class Employee {
 	private String username;
 	private String password;
 	
-	
 	public Employee() {
 	}
 	
@@ -51,6 +50,18 @@ public class Employee {
 		this.salary = salary;
 		this.startDate = startDate;
 	}
+	
+	/*
+	public Employee(String name, Position position, int salary, LocalDateTime startDate, String username, String password) {
+//		super();
+		this.name = name;
+		this.position = position;
+		this.salary = salary;
+		this.startDate = startDate;
+		this.username = username;
+		this.password = passwordEncoder.encode(password);
+	}
+	*/
 
 /*
 	public Employee(Long id, String name, Position position, int salary, LocalDateTime startDate) {

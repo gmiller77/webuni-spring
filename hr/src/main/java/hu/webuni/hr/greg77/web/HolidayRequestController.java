@@ -100,7 +100,8 @@ public class HolidayRequestController {
 	}
 
 	@PutMapping(value = "/{id}/approval")
-	public HolidayRequestDto approveHolidayRequest(@PathVariable long id, /*@RequestParam long approverId,*/ @RequestParam boolean status) {
+//	public HolidayRequestDto approveHolidayRequest(@PathVariable long id, /*@RequestParam long approverId,*/ @RequestParam boolean status) {
+	public HolidayRequestDto approveHolidayRequest(@PathVariable long id, @RequestParam boolean status) {
 		HolidayRequest holidayRequest;
 		try {
 			holidayRequest = holidayRequestService.approveHolidayRequest(id, status);

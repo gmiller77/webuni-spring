@@ -23,5 +23,9 @@ public interface EmployeeMapper {
 
 	@InheritInverseConfiguration
 	@Mapping(target = "company", ignore = true)
+	@Mapping(target = "holidayRequests", ignore = true)
+	@Mapping(target = "manager", ignore = true)
+	@Mapping(target = "username", ignore = true)
+	@Mapping(target = "password", ignore = true)
 	Employee dtoToEmployee(EmployeeDto employeeDto);
 }

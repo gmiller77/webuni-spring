@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.User;
 
 import hu.webuni.hr.greg77.model.Employee;
 
-
 public class HrUser extends User {
 	
 	public HrUser(String username, String password, Collection<? extends GrantedAuthority> authorities, Employee employee) {
